@@ -1,0 +1,204 @@
+1.
+a.
+int main()
+{     
+    int arr[3] = { 5, 10, 15 };
+    int* ptr = arr;
+
+    *ptr = 10;          // set arr[0] to 10
+    *(ptr + 1) = 20;      // set arr[1] to 20
+    ptr[2] = 30;        // set arr[2] to 30
+
+    while (ptr <= arr+2)
+    {
+        cout << *ptr<<endl;    // print values
+	ptr++;
+    }
+}
+
+b.
+By passing a pointer to the function, a copy of that pointer is made and
+any changes made to the pointer variable's value will be lost after the
+function returns. A reference to the pointer fixes the issue, because now
+the passed pointer variable itself can be changed.
+
+void findMax(int arr[], int n, int*& pToMax)
+{
+    if (n <= 0) 
+        return;      // no items, no maximum!
+    
+    int max = arr[0];
+    pToMax = &arr[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] > max)
+        {
+             max = arr[i];
+             pToMax = (arr+i);
+        }
+    }
+}       
+
+int main()
+{
+    int nums[4] = { 5, 3, 15, 6 };
+    int* ptr;
+
+    findMax(nums, 4, ptr);
+    cout << "The maximum is at address " << ptr << endl;
+    cout << "It's at index " << ptr - nums << endl;
+    cout << "Its value is " << *ptr << endl;
+}
+
+c.
+The pointer variable ptr is not initialized when it is passed to the function
+so there is no where that the dereferenced pointer will point to in the 
+function, causing an error. Memory for an int could either be dynamically 
+allocated for the pointer or another int variable could be declared for 
+the pointer to point to.
+
+void computeCube(int n, int* ncubed)
+{
+    *ncubed = n * n * n;
+}
+
+int main()
+{
+    int* ptr=new int;
+    computeCube(5, ptr);
+    cout << "Five cubed is " << *ptr << endl;
+}
+
+d.
+The comparisons are all comparing the pointers/memory addresses of the arrays,
+where as the characters themselves need to be checked. This can be fixed by
+dereferencing the pointers in order to reveal the characters that are being
+pointed to.
+
+bool strequal(const char str1[], const char str2[])
+{
+    while (*str1 != 0  &&  *str2 != 0) //while the characters arent the zerobyte
+    {
+       if (*str1 != *str2)  // compare corresponding characters
+            return false;
+            str1++;            // advance to the next character
+            str2++;
+    }
+    return *str1 == *str2;   // both ended at same time?
+}
+
+int main()
+{
+    char a[10] = "pointed";
+    char b[10] = "pointer";
+
+    if (strequal(a,b))
+        cout << "They're the same!\n";
+}
+
+e.
+When the function "getPtrToArray" returns the pointer to the array, the array 
+declared within it goes out of scope, so that memory is free to be used to 
+hold new data. A pointer to this array that is about to be invalid is returned.
+The "f" function, which does nothing but make a large array, fills it with 
+meaningless data, and return, could possibly overwrite the space in memory that 
+the first pointer is pointing to (because the array that WAS there is now out of scope).
+Because it could possibly be over written by something else, you cannot be sure that
+it will print the assumed integers.
+
+2.
+a. double* scoop;
+b. double vanilla[5];
+c. scoop=vanilla+4;
+d. *scoop=17;
+e. *(vanilla+3)=42;
+f. scoop-=3;
+g. scoop[1]=33;
+h. scoop[0]=25;
+i. bool b=(*scoop==*(scoop+1));
+j. bool d=(scoop==vanilla);
+
+3.
+a.
+double computeMean(const double* scores, int numScores)
+{
+    const double* ptr = scores;
+    double tot = 0;
+    int i=0;
+
+    while ((ptr+i) != scores + numScores)
+    {
+        tot += *(ptr+i);
+        i++;
+    }
+    return tot/numScores;
+}
+
+b.
+const char* findTheChar(const char* str, char chr)
+{
+    for (int k = 0; *(str+k) != 0; k++)
+        if (*(str+k) == chr)
+            return (str+k);
+
+    return NULL;
+}
+
+c.
+const char* findTheChar(const char* str, char chr)
+{
+    while (*str != 0){
+        if (*str == chr)
+            return str;
+        str++;
+    }
+    return NULL;
+}
+
+4. 
+Explanation of what happens:
+ - ptr points to array[0]
+ - array[0] is now -1 : array now holds {-1,3,4,17,22,19}
+ - ptr points to array[2]
+ - array[3] is now 9 : array now holds {-1,3,4,9,22,19}
+ - array[1] is now 79 : array now holds {-1,79,4,9,22,19}
+
+ - prints: 3 
+Because there are three elements (or enough memory for three integars between 
+the memory addresses of array[2] and array[5] (5-2=3)
+
+ - swap1 does nothing to the array because it takes pointers and simply swaps
+   where the copied pointers point to, which has no effect outside the scope
+   of the function
+ - swap2 swaps elements 0 and 2 of array : array now holds {4,79,-1,9,22,19}
+ - prints: 4
+	   79
+	   -1
+	   9
+	   22
+	   19
+
+Final Output:
+3
+4
+79
+-1
+9
+22
+19
+
+5. 
+void removeS(char * str){
+     while(*str!='\0'){
+	if(*str=='s'||*str=='S'){
+            char* ptr=str;
+            while(*ptr!='\0'){
+                *ptr=*(ptr+1);
+		ptr++;  
+            }
+	}else{
+	    str++;
+        }
+    }
+}

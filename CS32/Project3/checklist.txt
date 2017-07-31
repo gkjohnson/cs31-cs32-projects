@@ -1,0 +1,54 @@
+[ ] starts out with 3 lives
+[ ] play until he completes the mazes or dies
+[ ] uses the maze files maze0 to mazeN until they are all used
+[ ] 21x15 squares
+[ ] eace maze indicates the walls, where the pellets are, and "Home squares for where they start
+[ ] both monsters and pacman start normally in their positions
+[ ] monsters are initially dangerous to pacman
+[ ] game begins once everything is in its proper position
+[ ] the monsters move by individual algorithsm that i provide
+[ ] pacman moves/eats until either he is caught by monster in normal state, or eats all the pellets
+[ ] game pace is set by game "ticks"
+[ ] during each tick, pacman can move one space, eating a pellet / running into a monster, and a monster can move one space decided by teh algorithm
+[ ] here are the possible things that can happen after each "tick"
+	[ ] pacman can move into an empty space
+	[ ] pacman may eat a regular pellet and earn 10 points
+	[ ] pacman may eat a power pellet and earn 100 points, putting monsters in a vulnerable state
+	[ ] pacman may run into the same square as a monster and either eat the monster or be killed by the monster
+[ ] after a tick, pacman and the monsters are moved on screen
+[ ] if pacman clears the maze, then the current one is cleared and next one is loaded
+[ ] if pacman is killed, his lives are decremented by 1 (starts at 3)
+[ ] he is returned to home after dying - all monsters and pacman have their states reset
+[ ] if no lives, then the game is over
+[ ] player controls the direction by pressing the directional keys
+[ ] player will continue until a new direction is selected
+[ ] if pacman hits a wall/cage door, he stops. or he may die by hitting a monster
+[ ] each monster moves according to a different algorith when in normal or vulnerable state
+	[ ] normal: color is normal, and pacman will die if it hits it
+	[ ] vulnerable: will run away according to different algoithms. can be eaten, then will change back to normal, or after G ticks, it will revert. light blue. if it is eaten, it is converted to the monsterDie state in the smae tick
+	[ ] monsterdie: after the monster is eaten, it converts to this and stays in this state for 1 tick, then changes to teh returnhome state
+	[ ] returnhome: only goal is to move back home as quickly as possible. will not change state, even if another power pellet is eaten until it reaches home. once it reaches home, it converts to the normal state. displayed in gray
+[ ]when pacman eats a power pellet, player gets 100 points, and monsters are converted in the same tick to vulnerable for G number of ticks
+[ ]when pacman eats a regular pellet, the player gets 10 points
+[ ]when the player eats a monster, he gets 1000 points and the monster is converted to the monsterdie state in the same tick. it does not move for one tick and makes a noise during this state
+[ ] if pacman moves onto a square with a pellet + a monster, it is my choice what happens first (eating or dying without eating)
+[ ] the monster then changes to the returnHome state immediately, and moves towards the home position every frame
+[ ] if pacman runs into a monster, or a monster runs into pacman, then pacman dies and loses a life
+[ ] after dying, player is prompted to hit enter and continue playing where all monsters and pacman are set to home
+[ ] multiple monsters can be on the same square. if pacman moves onto the square while they are vulnerable, all monsters should be eaten, points given, and states set accordingly
+[ ] if pacman moves onto a square with a vulnerable and a normal monster, it is my choice what happens first
+[ ] pacman can move onto empty square, squares with regular pellets, and power pellets.
+[ ] pacman cannot move on or through wall squares or cage doors
+[ ] monsters maybe move onto any square the pacman can move onto + cage door squares, but cannot go through walls
+
+VIDEO GAME WORKINGS
+-consists of objects of x, y etc locations and internal flags/states
+[ ] a tick is 1/20th of a second
+[ ] each tick, the player has the opportunity to input a key,
+[ ] after each tick, and each object has had a chance to modify its state/position, the screen is drawn, then the next tick begins
+
+Detailed Requirements
+
+
+on page 23~
+

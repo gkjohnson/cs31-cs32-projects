@@ -1,0 +1,35 @@
+a:
+This program was not very difficult. The only problem I had was becoming familiar with the function getline because this was my first time using it in a program.
+
+b:
+("",100,"teacher",20) - test that program displays that the user must enter a name
+("Garrett",-1000,"teacher",0) - test that program displays that taxable income must be nonnegative
+("Garrett",1000,"",0) - test that program displays that user must enter an occupation
+("Garrett",1000,"teacher",-5) - test that program displays that the amount of children must be nonnegative
+
+("",-1000,"",-5) - test that the no name error takes precedence over other three errors and is displayed correctly
+("Garrett",-1000,"",-5) - test that negative income error take precedence over other two errors and is displayed correctly
+("Garrett", 1000,"",-5) - test that no occupation error takes precedence negative children error
+
+("Garrett",100,"teacher",20) - test that final tax will not go below zero
+
+("Garrett J",100,"Math Professor",0) - verify that the program can handle the name and occupation properly if they consist of more than one word
+
+("Garrett",100,"teacher",0) - test that tax for income under $50000 calculates properly (%4)
+("Garrett",100,"engineer",0) - test that "engineer" occupation does not affect tax for income under $50000
+("Garrett",100,"scientist",0) - test that "scientist" occupation does not affect tax for income under $50000
+("Garrett",50000,"teacher",0) - test that the tax is calculated properly when income is on the edge of the lower tier
+("Garrett",40000,"teacher",2) - test that the program handles children properly under $50000
+("Garrett",50000,"teacher",2) - test that the program handles children properly when equal to $50000
+
+("Garrett",60000,"teacher",0) - test that tax for income between $50000 and $120000 calculates properly
+("Garrett",60000,"engineer",0) - test that "engineer" occupation only affects the income amount between $50000 and $120000
+("Garrett",60000,"scientist",0) - test that "scientist" occupation only affects the income amount between $50000 and $120000
+("Garrett",120000,"teacher",0) - test that the tax is calculated properly when income is on the edge of the middle tier
+("Garrett",60000,"teacher",2) - test that the program handles children properly under $120000
+("Garrett",120000,"teacher",1000) - test that the program does not subract tax for children when income is equal to $120000
+
+("Garrett",130000,"teacher",0) - test that tax for income above $120000 calculates properly
+("Garrett",130000,"engineer",0) - test that "engineer" occupation only affects the income amount between $50000 and $120000
+("Garrett",130000,"scientist",0) - test that "scientist" occupation only affects the income amount between $50000 and $120000
+("Garrett",130000,"teacher",1000) - test that the program does not subract tax for children when income is over $120000

@@ -1,0 +1,283 @@
+1.
+
+Actor
+===
+Actor
+---
+GetX
+ - returns the X value of the actor
+ - All actors have an x location and because it behaves the same in all cases, it is not set to virtual
+GetY
+ - returns the y value of the actor
+ - All actors have an y location and because it behaves the same in all cases, it is not set to virtual
+SetX
+ - sets the x value of the actor
+ - All actors have an x location and because it behaves the same in all cases, it is not set to virtual
+SetY
+ - sets the y value of the actor
+ - All actors have an y location and because it behaves the same in all cases, it is not set to virtual
+getMyID
+ - returns the ID of the actor
+ - All actors have an ID and because it behaves the same in all cases, it is not set to virtual
+setDir
+ - sets the direction of the Actor
+ - every Actor has a direction that they are moving in, and because it only interacts with one private variable, it does not need to be changed in
+   other classes, so it is not set to virtual
+getDir
+ - returns the direction of the Actor
+ - every Actor has a direction that they are moving in, and because it only interacts with one private variable, it does not need to be changed in
+   other classes, so it is not set to virtual
+GetWorld
+ - returns the world that the actor is in
+ - every Actor has a world that they are in, and because it only interacts with one private variable, it does not need to be changed in
+   other classes, so it is not set to virtual
+GetDisplayColor
+ - returns the display color of the Actor
+ - Every actor has a display color that they are drawn in. However, some Actors return different colors depending on the state that they are in (Monsters)
+   so the function was set to virtual in order to create this functionality. By default it just returns the private color variable of the Actor
+DoSomething
+ - contains the logic for the actor's movment and actions
+ - this function is set to pure virtual because no actor has default logic and the derived classes all behave differently. Every Actor uses the DoSomething
+   function, though.
+
+Nachman:Actor
+---
+GetNumLivesLeft
+ - Returns the number of lives that Nachman has left
+ - Nachman is the only kind of Actor that has lives, so it did not make sense to include this function in the Actor class
+DecrementNumLives
+ - decrements the number of lives that Nachman has
+ - Nachman is the only kind of Actor that has lives, so it did not make sense to include this function in the Actor class
+GetScore
+ - returns the score for Nachman
+ - Nachman is the only kind of Actor that has a score, so it did not make sense to include this function in the Actor class
+setAlive
+ - sets Nachman's state to "alive"
+ - Nachman is the only Actor that has a binary state (dead or alive). The Monsters have a larger amount of states, so it
+   did not make sense to include this function for all Actors
+setDead
+ - sets Nachman's state to "dead"
+ - Nachman is the only Actor that has a binary state (dead or alive). The Monsters have a larger amount of states, so it
+   did not make sense to include this function for all Actors
+isDead
+ - returns true or false depending on whether or not Nachman is dead or alive. (true for dead, false for alive)
+ - Nachman is the only Actor that has a binary state (dead or alive). The Monsters have a larger amount of states, so it
+   did not make sense to include this function for all Actors
+hitMonsterCheck
+ - Checks whether or not Nachman has hit the passed Monster and takes the appropriate action if it has. If the Monster is
+   VULNERABLE the Monster is "eaten", but if the Monster is NORMAL, then Nachman is killed
+ - Not all Actors need to check if they hit a Monster (A Monster does not need to check if it hit a Monster), so this function
+   was not included for all Actors
+DoSomething
+ - This function takes care of changing Nachman's direction based on button presses, movement during the tick, checking if Nachman
+   has run into a pellet and then eating it, and checking if Nachman has hit a Monster
+ - All actors have to "do something" (move, change direction etc) so this function was declared in the Actor class
+
+
+Monster:Actor
+---
+SetState
+ - changes the Monster's state to what was passed (between NORMAL, MONSTER_DIED, VULNERABLE, and RETURN_HOME). If state is set to VULNERABLE
+   or MONSTER_DIED, then appropriate action is taken. (for VULNERABLE, the vulnerable ticks are set to the right number, and for MONSTER_DIED
+   the Vulnerable ticks are set to 0)
+ - an enum (MonsterState) is used for this class to keep track of the monster's state, and because not all actors have a MonsterState,
+   it did not make sense to have a function like this for all Actors. All Monsters, however, need to keep track of their state
+ - The function is not set to virtual because it all Monsters will save their State set in the same fashion
+GetState
+ - returns the Monster's state
+ - an enum (MonsterState) is used for this class to keep track of the monster's state, and because not all actors have a MonsterState,
+   it did not make sense to have a function like this for all Actors. All Monsters, however, need to keep track of their state
+ - The function is not set to virtual because it returns the value of a private variable in the Monster class
+SetDest
+ - sets the destination for where a Monster wants to go
+ - Not all Actors have a destination where they want to go (Nachman is player controlled, for example, so there is no "Destination" for
+   AI to try and get to). Every Monster does have a destination, though. The algorithm that decides what their destination is, however
+   different.
+ - The functio is not set to virtual because it sets two private variables in the Monster class and behaves the same for every Monster
+decideDest
+ - This function decides the destination of the Monster. Depending on the state of the Monster, it will call either the whileNormal
+   or the whileVulnerable function to decide the destination.
+ - Not all actors need a destination (Nachman for example, is player controlled, so it does not need a destination), so this function was
+   not included in the Actor class. Every Monster, however, needs to decide its destination
+ - even though every Monster decides its destination differently, this function is not set to virtual. Instead, the two functions that
+   it calls, whileNormal and whileVulnerable, are set to virtual so they can be changed by specific monsters
+whileNormal
+ - decides the destination the Monster while it is in a Normal state. It randomly selects a destination on the map
+ - Not every Actor needs to decide upon a destination, so this function was not included in the Actor class. However, every Monster needs
+   to decide upon a destination while Normal so it has somewhere to go.
+ - Every Monster decides on its destination differently, so this function is set to virtual so it can be changed according to the kind of
+   Monster. By default, this function changes the destination to a random point in the maze.
+whileVulnerable
+ - decides the destination the Monster while it is in a Vulnerable state. It randomly selects a destination on the map
+ - Not every Actor needs to decide upon a destination, so this function was not included in the Actor class. However, every Monster needs
+   to decide upon a destination while Vulnerable so it has somewhere to go.
+ - Every Monster decides on its destination differently, so this function is set to virtual so it can be changed according to the kind of
+   Monster. By default, this function changes the destination to a random space in the maze.
+move
+ - while all Actors move, the movement algorithm for Monsters was much more complex than other Actors' so it warranted a separate function
+   in Monster. The movement algorith for Nachman was simple enough to keep within the DoSomething function
+ - All monsters use the same movement algorithm, so it was defined in the Monster class so as not to duplicate code
+ - This function is not virtual because all Monsters use the same movement algorithm
+eaten
+ - sets the Monster to a Monster_died state. This function was originally intended to do more, but after looking at the spec again, some of the code
+   had to be moved elsewhere (the playing of the death sound, for example, needed to be played for the one tick that the monster was set to Monster_died,
+   not at the moment it was eaten)
+ - All monsters can get eaten, so this code was included in the Monster class
+ - Because all monsters are eaten the same, this function is not set to virtual
+hitNachmanCheck
+ - Checks whether or not the Monster has hit Nachman and takes the appropriate action if it has. If the Monster is
+   VULNERABLE, the Monster is "eaten", but if the Monster is NORMAL, then Nachman is killed
+ - Not all Actors need to check if they hit Nachman (Nachman does not need to check if it itself), so this function
+   was not included for all Actors. All Monster's can hit Nachman, though, so this function was included in the Monster class
+ - All monsters behave the same when they hit Nachman, so this function was not declared virtual
+decrementVulnerability
+ - decrements the amount of ticks that the Monster has left to be Vulnerable and sets the monster's state to Normal if the amount of ticks is 0
+ - every Monster must decrement its amount of vulnerable ticks, so this function was included in the Monster class. However, not every actor is vulnerable
+   or needs to keep track of its vulnerability, so this function was not included in the Actor class
+ - every Monster decrements its ticks in the same way, so this function is not set to virtual
+GetDisplayColor
+ - returns the color of the Monster depending on its state. LIGHTGRAY if MONSTER_DIED or RETURNHOME, LIGHTBLUE if VULNERABLE, or its default monster color
+   (different for each Monster)
+ - every Actor must return its color, so this function is declared as virtual in the Actor class. Because Monsters must return the colors differently,
+   the function is rewritten for the Monster class.
+DoSomething
+ - handles the movement, direction changes, hit detection and other actions that happen when the Monster is in any state.
+ - Every Actor does something, so this function is declared in the Actor class as pure virual.
+ - All Monster's "DoSomething" fuction do the same thing, so the DoSomething class is defined in the Monster class only. The Monster's specific behavior
+   is defined in other functions that are called by "DoSomething"
+
+Inky:Monster
+---
+Inky
+
+whileNormal
+ - Follows Inky's algorithm for deciding his next destination while NORMAL
+ - this algorithm is different from the Monster's default whileNormal function, so it was rewritten here
+ - it was declared virtual in the Monster class because it needed to be changed here
+
+Stinky:Monster
+---
+Stinky
+
+whileNormal
+ - Follows Stinky's algorithm for deciding his next destination while NORMAL
+ - this algorithm is different from the Monster's default whileNormal function, so it was rewritten here
+ - it was declared virtual in the Monster class because it needed to be changed here
+
+
+Dinky:Monster
+---
+Dinky
+
+whileNormal
+ - Follows Dinky's algorithm for deciding his next destination while NORMAL
+ - this algorithm is different from the Monster's default whileNormal function, so it was rewritten here
+ - it was declared virtual in the Monster class because it needed to be changed here
+
+Clyde:Monster
+---
+Clyde
+
+whileVulnerable
+ - Follows Clyde's algorithm for deciding his next destination while Vulnerable
+ - this algorithm is different from the Monster's default whileNormal function, so it was rewritten here
+ - it was declared virtual in the Monster class because it needed to be changed here
+
+MyMaze
+===
+MyMaze:Maze
+---
+LoadMaze
+ - Loads the current Level's maze and gets all the distances to every space from the Monster's start
+ - This function is delcared virtual in the Maze class because it needed to be overwritten here
+   in order to properly find the distances for each space after loading
+GetNextCoordinate
+ - returns the space that is next closest to the Monster's home
+ - this function needed to be called on a variable that is declared a "Maze" so it needed to be
+   declared there in order to work properly
+GetDistances
+ - This function saves the distances of each coordinate from the monster start coordinate
+
+
+MyWorld
+===
+MyWorld:World
+---
+RunLevel
+ - This function contains the game loop that cycles through every monster and Nachman and checks if
+   Nachman has died.
+ - The function must be implemented because it was declared pure virtual in the World class. It was 
+   declared pure virtual because you wanted me to implement in
+
+
+2.
+No bugs have been found. I believe that I have tested everything and finished everything
+
+
+3.
+The spec does not specify what is to happen when Nachman lands on a ghost and a pellet at the same time. I decided to have Nachman eat the pellet before dying.
+Monster_die color is not indicated in the spec, so it is set to LIGHTGRAY
+
+
+4.
+Nachman-
+I tested Nachman by making a "test()" function within the world class. It used assert function to test different assumptions about the Nachman at any given point
+in the game. The test function would be called after every "tick" had taken place. I also visually checked the code as well as the game to make sure it was running
+properly. For example, I made sure that the arrows were working properly by checking that when I pressed "UP", Nachman moved UP and not RIGHT, LEFT, or DOWN. I also
+made sure that the Actor generic functions were returning the right values for Nachman (such as GetMyID and GetDisplayColor) using assert.
+
+Monster-
+I tested some of the generic monster functions in the same "test()" function that I used to check NachMan. It made sure that states were appropraiate at any given time
+and that other functions were returning the right values. I tested the return values using assert for each of the derived monsters to ensure that they worked properly.
+I also made sure that the monsters were properly deciding where to go depending on their state by printing out their destinations. A nearly empty maze was created in
+order to better observe the movement patterns of the monsters.
+
+Inky-
+I tested Inky's whileNormal function (the one that decides his next destination) by printing out his destination every frame and verifying that it was set to an appropriate
+spot for the right amount of rames (for example, if Nachman does not move, then when Inky wants nachman, his destination should be set to Nachman for 10 frames)
+
+Stinky-
+I tested Stinky's whileNormal function (the one that decides his next destination) by setting his postion to a random one within the 10x10 bounds around Nachman and printing
+his destination and verifying that his denstination was Nachman. I then changed it so that it was a random position outside of the 10x10 bounds and verified that his
+destination was random
+
+Dinky-
+I tested Stinky's whileNormal function (the one that decides his next destination) by setting his x value = nachman's x value for every y, then setting his y value=
+nachman's y value for every x in an empty maze and made sure that his destination was always set to Nachman. I then put walls in the way to make sure that when a wall
+was in the way, his destination was set to a random point. Then I placed him randomly around the map (where his x value!= nachman's x or his y value != nachmans y) to
+make sure that a random value was produced.
+
+Clyde-
+I tested Clyde's whileVulnerable function (the one that decides his next destination) by printing out the values of Nachman's current quadrant (0 or 1), Clyde's 
+desired quadrant (0 if Nachman's quadrant is 1 etc) and Clyde's desired space (based off of his desired quardrant) to makes sure that they all made sense in relation
+to each other. I made sure, for example, taht when Nachman's quadrant was 0,0 that Clyde always wanted to get to quadrant 1,1. And when clyde wanted to get quadrant
+1,1 that the random values that were being generated never corresponded to space outside of quadrant 1,1.
+
+MyMaze-
+I printed out the distances grid to make sure that it matched the grid that was given to us in the spec. I also visually checked the code and game to make sure that
+the monsters were not taking abnormally long paths to their "home" space. I made sure that the program did not crash even if it could not find a maze (meaning that
+the LoadMaze function worked and returned properly with my changes)
+
+MyWorld-
+There was not much to include for the MyWorld class beyond fleshing out the psuedocode given to us in the spec. The fact that the game runs means this is working.
+The characters move properly and I only die when expected/eat when expected. I visually checked the code to make sure that nothing had been missed in the MyWorld
+"runLevel" function. I included a "test()" function in this class to make sure that at every tick, every monster/nachman was in its expected place in the expected
+state etc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

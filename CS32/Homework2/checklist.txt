@@ -1,0 +1,15 @@
+[ ] use a STACK of Coords
+[ ] check pseudocode for problem 1
+- DO NOT CHECK:
+	[ ] if the maze is 10x10 - it IS
+	[ ] the maze contains only Xs and .s
+	[ ] The sides of the maze are covered with Xs
+	[ ] the starting point is a .
+
+
+
+[x] spot check stack implementation
+[x] check order of first 12 spaces
+[x] spot check queue implementation
+[x] check order of first 12 spaces
+[ ] check problem 5

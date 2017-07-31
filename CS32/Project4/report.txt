@@ -1,0 +1,436 @@
+1.
+NewsAggregator class:
+  I used the StringMapper class to keep track of all of the stories throughout the
+function. Every story was put into the StringMapper class with the URL as the key
+and checked to make sure that the URL was not already in the bag.
+  Vectors were used to hold the series of keywords and NewsClusters so that they
+could be expanded if needed. In order to sort them, I used the std sort algorithm
+by creating a comparison function for both NewsClusters and keywords based on their
+size. Otherwise, it checked the strings' orders.
+  Every cluster(now with a kernel story) was cycled through and attempted to add
+its headline to every other cluster. This was done until nothing changed.The
+NewsClusters were then sorted Another vector was created that stored the sizes of
+the vectors. If two identifiers matched, the size was set to 0 in the vector. When
+copying the NewsCluster urls into the submitted vectors, it only copied those 
+Newsclusters whose size was greater than zero and held more than the threshold percentage
+of stories.
+  For the keywords, every story was cycled through and every unique keyword was placed
+into a vector. If a keyword was seen twice, it would increment the amount of times it had
+seen the keyword. They were then sorted, then copied over to the passed vector
+
+NewsCluster class:
+  This class uses a StringMapper and a set in order to keep track of the headlines
+and urls. It also contains a flag that keeps track of whether or not a kernel had
+been inserted yet. When a kernel story is submitted, the flag is set to true. If a 
+kernel story has already been submitted, then the new story will not be set.
+  If the a kernel story has not been submitted, then a regular story cannot
+be submitted. When submitting a story, the function cycles through every headline
+already submitted to the cluster, then cycles through every word in every headline,
+compares every word in each headline to every word in the submitted headline. If
+any word is less than four characters or has already been found, it is skipped and
+not considered. The amount of words found per headline is kept track of and if it
+reaches 3 when comparing to any one of the cluster's headlines, then the new story
+is submitted properly by submitted the pair to the map and the headline is inserted
+into the set
+  When creating the identifier, the set full of headlines is used to cycle through
+every headline and it returns every headline in alphabetical order. The returned
+headlines are put into a string and separated by plus signs.
+  In order to cycle through every headline and URL pair, the NewsCluster class simply
+uses the StringMapper functions to cycle through each pair
+
+StringMapper class:
+  I decided to implement this class using the hash table approach. I created an array
+which makes up the buckets. Every time a new pair is inserted into the object,
+a hash id is created based off of the key string and the pair is then placed into the
+appropriate bucket. If there is already a pair in the bucket, then it adds the new
+pair to the end of the linked list in the bucket.
+  There is also a separate linked list. After the new pair is inserted into the bucket, 
+a Node that holds a pointer to the new pair is added to the end of the linked list.
+  In order to find the next item in the map, the object holds a pointer to the current
+Node in the linked list. When getting the first item in the table, the current node
+pointer is reset to the head of the linked list. Every time the next item is aksed for
+the pointer moves ahead one Node and returns the pair that is pointed to so no loops
+are required.
+  The find function cycles through every item in the linked list and compares the
+key parameter to every pair's key that is pointed to. If the key is found, it returns
+the value associated with it.
+
+2.
+
+The functions I used to test each class. The Main class was checked by using it with the rsslist.txt doc and ensuring that the formatting was correct
+
+void stringMapperTest()
+{
+	cout<<"Testing StringMapper...";
+	{//Check to make sure that the StringMapper works properly when empty
+		StringMapper<int> s;
+		assert(s.size()==0); //make sure that the map starts empty
+
+		int n=0;
+		string str="test";
+		assert(!s.find(str,n)); //make sure that nothing is found
+		assert(n==0&&str=="test");
+		assert(!s.getFirstPair(str,n)); //make sure that nothing is returned for the first pair
+		assert(n==0&&str=="test");
+		assert(!s.getNextPair(str,n)); //make sure that nothing is returned for the next pair
+		assert(n==0&&str=="test");
+	}
+	{//Check to make sure that StringMapper works properly when filled
+		StringMapper<string> s;
+		assert(s.size()==0); //make sure that the map starts empty
+
+		s.insert("one","oneValue"); //add a single pair to the map
+		assert(s.size()==1); //verify that the size increases appropriately 
+		
+		string key,value; //verify that functions that return values wrk properly
+		assert(s.find("one",value)); //make sure that the single inserted value can be found
+		assert(value=="oneValue");
+		assert(s.getFirstPair(key,value)); //make sure that getFirstPair returns the first and only values
+		assert(key=="one"&&value=="oneValue"); 
+		assert(!s.getNextPair(key,value)); //make sure that getNextPair does not change the variables and that it returns false because there is nothign more
+		assert(key=="one"&&value=="oneValue");
+		
+		s.insert("one", "oneValueNew"); //make sure that when inserting a value with the same key, the value associated with that key is changed
+		assert(s.find("one",value)&&value=="oneValueNew");
+		assert(s.size()==1); //make sure that the size is not changed for a duplicate key
+
+		s.insert("two","twoValue"); //ensure that another value can be inserted and the size increases appropriately
+		assert(s.size()==2);
+		assert(s.getFirstPair(key,value)); //make sure that the iteration functions still work properly with two pairs inserted
+		assert(key=="one"&&value=="oneValueNew");
+		assert(s.getNextPair(key,value));
+		assert(key=="two"&&value=="twoValue");
+		assert(!s.getNextPair(key,value));
+		assert(key=="two"&&value=="twoValue");
+
+		s.insert("three","threeValue"); //insert several more values
+		assert(s.size()==3);
+		s.insert("four","oneValueNew");
+		assert(s.size()==4);
+		s.insert("three","threeValueNew"); //change the third pair's value
+		assert(s.size()==4);
+		
+		assert(s.find("one",value)&&value=="oneValueNew"); //verify that the find functions works properly for each pair with many pairs inserted
+		assert(s.find("two",value)&&value=="twoValue");
+		assert(s.find("three",value)&&value=="threeValueNew");
+		assert(s.find("four",value)&&value=="oneValueNew");
+		assert(!s.find("five",value)&&value=="oneValueNew"); //make sure that the value variable is not changed when searching for a nonexistant pair
+
+		assert(s.getFirstPair(key,value)&&key=="one"&&value=="oneValueNew"); //verify that the iteration functions work properly with many pairs
+		assert(s.getNextPair(key,value)&&key=="two"&&value=="twoValue");
+		assert(s.getNextPair(key,value)&&key=="three"&&value=="threeValueNew");
+		assert(s.getNextPair(key,value)&&key=="four"&&value=="oneValueNew");
+		assert(!s.getNextPair(key,value)&&key=="four"&&value=="oneValueNew"); //make sure that the value variable is not changed when getting the next pair after the last one
+
+		s.getFirstPair(key,value); //verify that none of the pairs contain the old values that had previously been changed
+		do{
+			assert(value!="threeValue"&&value!="oneValue");
+		}while(s.getNextPair(key,value));
+
+		assert(key=="four"&&value=="oneValueNew"); //verify that the last pair checked was the last one entered
+		assert(s.size()==4); //verify that the size of the function did not change for whatever reason
+	}
+	cout<<"Passed"<<endl;
+}
+void RSSProcessorTest()
+{
+	cout<<"Testing RSSProcessor...";
+
+	string base="file://c:/Users/Garrett Johnson/Documents/Visual Studio 2010/Projects/proj4_cs32/proj4_cs32/";
+
+	{
+		//The base variable is the root directory that contains the text file
+		RSSProcessor r(base+"nonExistant.txt"); //pass the processor a text file that does not exist
+		string headline="testHeadline";
+		string url="testUrl";
+		assert(!r.getFirstItem(url,headline)); //ensure that the functions return false when getData has not been called
+		assert(!r.getNextItem(url,headline));
+		assert(!r.getData()); //verify that getData returns false because the file did not exist
+		assert(!r.getFirstItem(url,headline)); //verify that the functions return false even after getData was called because the file did not exist
+		assert(!r.getNextItem(url,headline));
+		assert(headline=="testHeadline"&&url=="testUrl"); //verify that the variables used did not change for whatever reason (because the functions should not have changed them)
+
+	}
+	{		
+		string headline="testHeadline";
+		string url="testUrl";
+		RSSProcessor r(base+"rss_empty.txt"); //pass the processor a text file that has no text in it at all
+		assert(r.getData()); //verify that getData returns true because the file existed, but cannot find data
+		assert(!r.getFirstItem(url,headline)); //verify that both of the iteration functions return false because there was nothing to return
+		assert(!r.getNextItem(url,headline));
+		assert(headline=="testHeadline"&&url=="testUrl"); //verify that the variables used did not change for whatever reason (because the functions should not have changed them)
+
+	}
+	{
+		string headline="testHeadline";
+		string url="testUrl";
+		RSSProcessor r(base+"rss_incoherant.txt"); //pass the processor a text file that has gibberish text (nothing that matches xml feed)
+		assert(r.getData()); //verify that getData returns true because the file existed, but cannot find data
+		assert(!r.getFirstItem(url,headline)); //verify that both of the iteration functions return false because there was nothing to return
+		assert(!r.getNextItem(url,headline));
+		assert(headline=="testHeadline"&&url=="testUrl"); //verify that the variables used did not change for whatever reason (because the functions should not have changed them)
+
+	}
+	{
+		RSSProcessor r(base+"rss_single.txt"); //pass the processor a text file that contains an item/title/link tags for a properly formed story. There is random text at the beginning and end of the file
+		string headline,url;
+		assert(r.getData()); //verify that the getData function returns true because the file existed
+		assert(r.getFirstItem(url,headline));  //verify that the first item function returns true because getData had found a story.
+		assert(headline=="HERE IS YOUR TITLE!!!"&&url=="http://www.google.com/"); //make sure that the correct information was found
+		assert(!r.getNextItem(string(),string())); //make sure that with only one story, the get next story returns false because there is nothing else after the first pair
+		assert(headline=="HERE IS YOUR TITLE!!!"&&url=="http://www.google.com/"); //make sure that the variable were not altered
+	}
+	{
+		RSSProcessor r(base+"rss_many.txt"); //pass the processor text file that contains many stories. with random text dispersed in between them
+
+		string headline,url,s_headline,s_url;
+		assert(r.getData()); //make sure that the getdata function returns true because the file exists
+		assert(r.getFirstItem(url,headline)); //cycle through every story pair and make sure that it contains the right headline/url pair
+		char i[2]={'1'}; 
+		do{ //the stories are ordered numerically ("This is story 1"/"http://www.story1.com/", "This is story 2"/"http://www.story2.com/" etc) so they can be cycled through
+			s_headline="This is story "+string(i)+""; //and therefore easily checked
+			s_url="http://www.story"+string(i)+".com/";
+
+			assert(headline==s_headline&&url==s_url);
+			i[0]++;
+		}while(r.getNextItem(url,headline));
+		assert(i[0]=='6'); //make sure that the loop stopped after passing the fifth story
+	}
+	cout<<"Passed"<<endl;
+}
+void newsClusterTest()
+{
+	cout<<"Testing NewsCluster...";
+
+	{//verify that a NewsCluster only accepts the correct headlines
+		NewsCluster n;
+
+		string headline="testH";
+		string url="testU";
+
+		assert(n.size()==0&&!n.getFirstNewsItem(headline,url)&&!n.getNextNewsItem(headline,url)&&n.getIdentifier()==""); //make sure that calling these while it is empty does not change the passed values
+		assert(!n.submitStory("test","test")); //make sure aht a stor cannot be submitted without first submitting a kernel story
+		assert(headline=="testH"&&url=="testU");
+
+		assert(n.submitKernelStory("aaaa aaa bbbb bbb cccc ccc dddd ddd","oneURL")); //verify that a kernel story can be submitted
+		assert(!n.submitKernelStory("testing","shouldn't work")); //verify that another kernel story cannot be entered
+		assert(n.size()==1); //verify that the size is correct
+
+		assert(n.getIdentifier()=="aaaa aaa bbbb bbb cccc ccc dddd ddd"); //verify that the identifier is correct (with no pluses)
+
+		assert(n.getFirstNewsItem(headline,url)); //verify that the get first headline function works properly with one headline
+		assert(headline=="aaaa aaa bbbb bbb cccc ccc dddd ddd"&&url=="oneURL");
+		assert(!n.getNextNewsItem(headline,url)); //verify that the get next headline function works properly with one headline (returns false and does not change the variables)
+		assert(headline=="aaaa aaa bbbb bbb cccc ccc dddd ddd"&&url=="oneURL");
+
+		assert(!n.submitStory("eeee ffff gggg hhhh","test")); //verify that none of these stories are submitted (no matching words)
+		assert(!n.submitStory("aaaa bbbb ccc","test"));  //not enough words (ccc is not enough letters)
+		assert(!n.submitStory("aaaa","test")); //not enough words match
+		assert(!n.submitStory("aaaa bbbb ffff","test")); //not enough words match
+		assert(!n.submitStory("aaaa bbbb bbbb","test")); //duplicate words do not count 
+		assert(!n.submitStory("aaaa aaa bbbb bbb cccc ccc dddd ddd","test")); //a duplicate headline will not be accepted
+		assert(!n.submitStory("aaa bbb ccc ddd","test")); //not enough characters in the words
+		assert(!n.submitStory("aaaa aaa bbbb bbb ccc ddd","test")); //not enough words with four characters
+		assert(n.size()==1); //nothing was added
+
+		assert(n.submitStory("cccc aaaa bbbb ffff eeee eee","twoURL")); //works properly because it has just enough words
+		assert(n.size()==2&&n.getFirstNewsItem(headline,url)&&headline=="aaaa aaa bbbb bbb cccc ccc dddd ddd"&&url=="oneURL"); //verify that these functions work properly with two headliens
+		assert(n.getNextNewsItem(headline,url)&&headline=="cccc aaaa bbbb ffff eeee eee"&&url=="twoURL"); //verify that getNextHeadline now work properly
+		assert(!n.getNextNewsItem(headline,url)&&headline=="cccc aaaa bbbb ffff eeee eee"&&url=="twoURL");//verify that getNextHeadline returns false when it reaches the end
+
+		assert(n.getIdentifier()=="aaaa aaa bbbb bbb cccc ccc dddd ddd+cccc aaaa bbbb ffff eeee eee"); //verify that the headlines are in alphabetical order in the identifier
+
+		assert(!n.submitStory("aaaa dddd ffff","test")&&n.size()==2); //verify that the three words will not match across multiple headlines
+		assert(n.submitStory("bbbb cccc ffff","threeURL")&&n.size()==3); //verify that the headline will be submitted by matching the second headline
+
+		assert(n.size()==3&&n.getFirstNewsItem(headline,url)&&headline=="aaaa aaa bbbb bbb cccc ccc dddd ddd"&&url=="oneURL"); //verify that the getNext and getFirstHeadlines work with the three headliens
+		assert(n.getNextNewsItem(headline,url)&&headline=="cccc aaaa bbbb ffff eeee eee"&&url=="twoURL");
+		assert(n.getNextNewsItem(headline,url)&&headline=="bbbb cccc ffff"&&url=="threeURL");
+
+		assert(n.getIdentifier()=="aaaa aaa bbbb bbb cccc ccc dddd ddd+bbbb cccc ffff+cccc aaaa bbbb ffff eeee eee"); //verify that the headlines are put in the proper order in the identifier
+	}
+	cout<<"Passed"<<endl;
+}
+void newsAggTest()
+{
+	cout<<"Testing NewsAgg...";
+
+	string base="file://c:/Users/Garrett Johnson/Documents/Visual Studio 2010/Projects/proj4_cs32/proj4_cs32/";
+	{
+		NewsAggregator na;
+		
+		vector<Cluster> c;
+		vector<Keyword> k;
+
+		assert(na.getTopStoriesAndKeywords(5,c,k)==0);//verify that the NewsAggregator class returns properly with no rss feeds
+		assert(c.size()==0&&k.size()==0); // and that c and k are not changed
+
+		ifstream rssFeeds("rss_empty.txt"); //a blank doc
+		string s;
+		while(getline(rssFeeds,s))na.addSourceRSSFeed(s); 
+		na.addSourceRSSFeed(base+"rss_empty.txt"); //add and empty feed
+
+		assert(na.getTopStoriesAndKeywords(1,c,k)==0); //verify that the function works properly
+		assert(c.size()==0&&k.size()==0);// verify that the two vectors were not changed
+	}
+	{
+		NewsAggregator na;
+		
+		vector<Cluster> c;
+		vector<Keyword> k;
+		na.addSourceRSSFeed(base+"rss_newsAgg2.txt"); //add a newsfeed with various stories in it
+
+		assert(na.getTopStoriesAndKeywords(5,c,k)==0); //verify that the function returns properly
+		cout<<c.size()<<endl;
+		assert(c.size()==3); //verify that the correct number of clusters was returned
+
+		cout<<endl;
+		for(int i=0;i<c.size();i++) //print out the titles
+			cout<<c[i].getTitle()<<endl;
+	}
+	{
+		cout<<endl<<endl;
+
+		NewsAggregator na;
+		
+		vector<Cluster> c;
+		vector<Keyword> k;
+
+		assert(na.getTopStoriesAndKeywords(5,c,k)==0);
+		assert(c.size()==0&&k.size()==0);
+
+		ifstream rssFeeds("rsslist_test.txt"); //add a list of rss feeds (the three mentioned below)
+		if(!rssFeeds)assert(false); //make sure the file was found
+		string s;
+		while(getline(rssFeeds,s))na.addSourceRSSFeed(s); //add the rss feeds
+
+		assert(na.getTopStoriesAndKeywords(20,c,k)==0); //get the top stories/keywords
+
+		string url;
+		for(int i=0;i<c.size();i++){ //print out all of the clusters and visually check them
+			cout<<c[i].getTitle()<<endl;
+			c[i].getFirstURL(url);
+			do{
+				cout<<" "<<url<<endl;
+			}while(c[i].getNextURL(url));
+		}
+
+		for(int i=0;i<k.size();i++){ //print out all of the keywords and visually check them
+			cout<<k[i].keyword<<" "<<k[i].numUses<<endl;
+		}
+
+	}
+	cout<<"Passed"<<endl;
+}
+
+rss_newsAgg1.txt:
+<item>
+	<title>aaaa bbbb cccc dddd eeee</title>
+	<link>http://www.site1.com/s1.htm</link>
+</item>
+<item>
+	<title>aaaa bbbb cccc dddd eeee</title>
+	<link>http://www.site1.com/s2.htm</link>
+</item>
+<item>
+	<title>asdfasfasd222</title>
+	<link>http://www.site1.com/s1.htm</link>
+</item>
+
+
+
+rss_newsAgg2.txt:
+<item>
+	<title>aaaa aaaa bbbb cccc dddd</title>
+	<link>http://www.site2.com/s1.html</link>
+</item>
+
+<item>
+	<title>eeee ffff hhhh</title>
+	<link>http://www.site2.com/s1_5.html</link>
+</item>
+
+<item>
+	<title>aaaa bbbb cccc ffff</title>
+	<link>http://www.site2.com/s2.html</link>
+</item>
+
+<item>
+	<title>cccc cccc dddd aaaa</title>
+	<link>http://www.site2.com/s3.html</link>
+</item>
+
+<item>
+	<title>eeee ffff gggg hhhh</title>
+	<link>http://www.site2.com/s5.html</link>
+</item>
+<item>
+	<title>hhhh ffff gggg iiii</title>
+	<link>http://www.site2.com/s6.html</link>
+</item>
+<item>
+	<title>zzzz xxxx yyyy dddd</title>
+	<link>http://www.site2.com/s7.html</link>
+</item>
+
+<item>
+	<title>ffff aaaa bbbb</title>
+	<link>http://www.site2.com/s4.html</link>
+</item>
+<item>
+	<title>ffff aaaa dddd</title>
+	<link>http://www.site2.com/s8.html</link>
+</item>
+<item>
+	<title>ffff aaaa dddd cccc zzzz</title>
+	<link>http://www.site2.com/s9.html</link>
+</item>
+
+
+<item> //malformed, the rest is not included
+</item>
+
+<item>
+	<title>zzzz eeee cccc bbbb aaaa</title>
+	<link>http://www.site2.com/sNEVER.html</link>
+</item>
+
+
+rss_newsAgg3.txt:
+<item>
+	<title>jjjj aaaa kkkk llll</title>
+	<link>http://www.site3.com/s1.html</link>
+</item>
+<item>
+	<title>jjjj kkkk llll</title>
+	<link>http://www.site3.com/s2.html</link>
+</item>
+<item>
+	<title>jjjj kkkk eeee llll</title>
+	<link>http://www.site3.com/s3.html</link>
+</item>
+<item>
+	<title>jjjj kkkk oooo llll</title>
+	<link>http://www.site3.com/s4.html</link>
+</item>
+<item>
+	<title>bbbb jjjj pppp oooo</title>
+	<link>http://www.site3.com/s5.html</link>
+</item>
+<item>
+	<title>jjjj oooo pppp</title>
+	<link>http://www.site3.com/s6.html</link>
+</item>
+<item>
+	<title>pppp oooo eeee bbbb</title>
+	<link>http://www.site3.com/s7.html</link>
+</item>
+<item>
+	<title>bbbb oooo pppp</title>
+	<link>http://www.site3.com/s8.html</link>
+</item>
+
+
+3.
+If I understood the spec properly, the classes should all be implemented properly.
+I did not find any bugs in the program.			

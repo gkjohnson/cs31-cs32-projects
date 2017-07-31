@@ -1,0 +1,316 @@
+1.
+
+The test bag declares a private struct named "BagItem" which serves as the nodes for the linked list structure. The BagItem has
+four data members: one of ItemType for the item's value, one of int for the amount copies of the item, and two pointers of
+type BagItem to point to the previous and next items in the list.
+
+The Bag itself uses a dummy node or BagItem as a head. The value of the ItemType value is a garbage value in the head and it
+is never checked in any of the functions. If the Bag is empty, then the head node's next pointer points to NULL
+The last node in the list points to "NULL" as the next item. When adding an item to the list, the "count" value is incremented
+in the appropriate BagItem if it exists. If no BagItem's value matches the new item's value being put in the bag, then a new BagItem
+is added to the end of the list.
+
+2. Pseudocode
+PUBLIC FUNCTIONS
+---
+Bag Copy Constructor:
+	Copy over the m_curr pointer
+	Cycle through each BagItem in the passed Bag's list
+		Create a new BagItem for every item in the passed Bag's list while copying their values
+
+Bag Destructor:
+	Cycle through each item in the Bag's list
+		Delete each BagItem that is pointed to, making sure to save the "next" pointer value before deleting the item and then move on
+
+Bag Assignment Operator:
+	If the Bag is not the exact same object that it is being set equal to
+		Create a copy of the passed Bag using the copy constructor
+		Swap lists with the copied bag using the "Swap" function
+	return the now changed Bag	
+
+Bag empty:
+	If the m_head's next pointer points to NULL
+		then the bag must be empty because it does not point to a valid first BagItem
+	otherwise the bag is not empty
+
+Bag size:
+	Cycle through the Bag's list of items
+		for every item, add the amount of items per BagItem to a size variable until it reaches the end of the list
+	return the amount of items that were counted in the size variable
+
+Bag uniqueSize:
+	Cycle through the Bag's list of items
+		increment a size variable by one for every iteration that it goes through until it reaches the end of the list
+	return the amount of items via the size variable
+
+Bag insert:
+	Cycle through each of the Bag's items in the Bag's list until it reaches an item with the same value that is being inserted or it reaches the end (a next pointer to NULL)
+	
+	if it reached the end, then create a new BagItem with the value to be inserted via the last BagItem's next pointer
+		return true
+
+	Otherwise, if a BagItem with a matching value was found, then increment the count value for the apropriate BagItem and also return true
+
+Bag erase:
+	Find where the BagItem that is to be deleted is via the whereIs function (returns a pointer to the BagItem with the passed value)
+	If item exists
+		Decrement the BagItem's count by one
+		If the BagItem is now empty because it only contained 1
+			then delete the item via the "eraseAll" function
+		return that it deleted one copy of the item
+	Otherwise if it doesnt exist, then return that it deleted zero copies
+	
+Bag eraseAll:
+	Find where the BagItem that is to be deleted is via the whereIs function (returns a pointer to the BagItem with the passed value)
+	If the BagItem with the matching value exists
+		Set the pointer for previous item to point to the next BagItem
+		If the item to be erased is not the last item (so the next pointer does not point to NULL)
+			Then set the next BagItem's previous pointer to point to the previous item
+		delete the BagItem and return the amount of items that the bag used to hold
+	otherwise, if the item does not exist, return that it erased 0 items
+
+Bag contains:
+	Find where the BagItem that matches the value is via the whereIs function (returns a pointer to the BagItem with the passed value)
+	If the item exists, then return that it does
+	otherwise return false
+
+Bag count:
+	Find where the BagItem that matches the value is via the whereIs function (returns a pointer to the BagItem with the passed value)
+	If it exists
+		return the amount of copies of that item
+	otherwise, return that there are zero copies	
+
+Bag swap:
+	Swap both Bags' head's next pointers by using a temp pointer to save one pointer before replacing it
+	
+	if the next item now exists for the first Bag's head pointer
+		set the next BagItem's previous pointer to point to the head that points to it (so that no pointers are pointing between the two bags)
+	
+	repeat for the other bag
+
+
+Bag start:
+	set the current pointer to the head's next pointer
+
+Bag next:
+	if the current pointer is not NULL
+		set the current pointer the current BagItem's next pointer
+
+Bag ended:
+	if the current point is NULL (meaning that it has run off the end because the last BagItem's next pointer would be NULL)
+
+PRIVATE FUNCTIONS:
+---
+Bag whereIs:
+	Cycle through each item in the list, starting with the item next after the head, until it reaches the end or it finds the BagItem who's value matches the passed value
+	return a pointer to the item found (it will be nULL if it reaches the end of the list)
+
+OTHER FUNCTIONS:
+---
+Combine
+	Copy the first bag and the second bag into new items (I wasn't sure whether or not I was allowed to use the iterators on the originals because this function does not necessarily change them)
+	Cycle through the copied second bag
+		for each item in the second bag, insert the appropriate amount into the copied first bag
+	Swap the first copied bag and the "result" bag
+
+Subtract
+	Copy the first bag and the second bag into new items (I wasn't sure whether or not I was allowed to use the iterators on the originals because this function does not necessarily change them)
+	Cycle through the copied second bag
+		for each value in the second bag, check if it has more copies than the first bag
+			if it does, then erase all of the items of that value in the first bag
+		otherwise, remove the appropriate amount of items of that value from the first bag
+	Swap the first copied bag and the "result" bag
+
+3. Test Code:
+void test2(){
+
+	//TESTING WITH NO ITEMS INSERTED
+	Bag b;
+	Bag b2;
+	Bag result;
+
+	//check to make sure that the bag initializes correctly
+	assert(b.empty()&&b.size()==0&&b.uniqueSize()==0&&b.erase(0)==0&&b.eraseAll(0)==0&&!b.contains(0)&&b.count(0)==0);
+
+	//check to make sure that iterator works correctly by not entering the loop (because there are no items in the bag
+	for(b.start();!b.ended();b.next()){
+		assert(false);
+	}
+
+	b.swap(b2); //make sure that the swap function does not get stuck when neither Bag has any items
+
+	b2.insert(10);
+	//make sure that the swap function works when b has no items
+	b.swap(b2);
+	assert(!b.empty()&&b.size()==1&&b.uniqueSize()==1&&b.contains(10)&&b.count(10)==1);
+	assert(b2.empty()&&b2.size()==0&&b2.uniqueSize()==0&&b2.erase(0)==0&&b2.eraseAll(0)==0&&!b2.contains(0)&&b2.count(0)==0);
+
+	//make sure that the swap function works when the passed Bag has no items
+	b.swap(b2);
+	assert(b.empty()&&b.size()==0&&b.uniqueSize()==0&&b.erase(0)==0&&b.eraseAll(0)==0&&!b.contains(0)&&b.count(0)==0);
+	assert(!b2.empty()&&b2.size()==1&&b2.uniqueSize()==1&&b2.contains(10)&&b2.count(10)==1);
+	
+	{//make sure the copy constructor functions when the passed bag has no items
+		Bag temp(b);
+		assert(temp.empty()&&temp.size()==0&&temp.uniqueSize()==0&&temp.erase(0)==0&&temp.eraseAll(0)==0&&!temp.contains(0)&&temp.count(0)==0);
+	}
+
+	//make sure that the assignment constructor does not get stuck when the passed bag has no values
+	b2=b;
+	assert(b2.empty()&&b2.size()==0&&b2.uniqueSize()==0&&b2.erase(0)==0&&b2.eraseAll(0)==0&&!b2.contains(0)&&b2.count(0)==0);
+
+	//make sure that both the combine and subtract functions do not get stuck or fail when there are no items in either of the passed bags
+	result.insert(10); result.insert(11);
+	combine(b,b2,result);
+	assert(result.empty()&&result.size()==0&&result.uniqueSize()==0&&result.erase(0)==0&&result.eraseAll(0)==0&&!result.contains(0)&&result.count(0)==0);
+
+	result.insert(10); result.insert(11);
+	subtract(b,b2,result);
+	assert(result.empty()&&result.size()==0&&result.uniqueSize()==0&&result.erase(0)==0&&result.eraseAll(0)==0&&!result.contains(0)&&result.count(0)==0);
+
+	//TESTING BAG WITH ONE ITEM
+	assert(b.insert(10)); //testing to make sure insert returns true
+
+	//make sure that these functions behave properly with a single item
+	assert(!b.empty()&&b.size()==1&&b.uniqueSize()==1&&b.contains(10)&&b.count(10)==1);
+
+	assert(b.erase(10)==1); //verify that the erase function works with only one item
+	assert(b.empty()&&b.size()==0&&b.uniqueSize()==0&&!b.contains(10)&&b.count(10)==0);
+
+	b.insert(10);
+	assert(b.eraseAll(10)==1); //verify that the eraseAll function works with only one item
+	assert(b.empty()&&b.size()==0&&b.uniqueSize()==0&&!b.contains(10)&&b.count(10)==0);
+
+	int count=0;
+	b.insert(10);
+	for(b.start();!b.ended();b.next()){
+		count++;
+		assert(b.currentCount()==1&&b.currentValue()==10); //verify that there is only one '10' in the bag
+	}
+	assert(count==1); //verify that the iterators only entered the loop once because there is only one item
+
+	//verify that the swap function works when both bags have one item
+	b2.insert(11);
+	b.swap(b2);
+	assert(!b.contains(10)&&b.count(10)==0&&b.size()==1&&b.uniqueSize()==1&&
+		b.contains(11)&&b.count(11)==1); //verify that the values were swapped properly
+	b2.erase(10);
+
+	{//make sure the copy constructor functions when the passed bag has one item
+		Bag temp(b);
+		assert(!temp.empty()&&temp.size()==1&&temp.uniqueSize()==1&&temp.contains(11)&&temp.count(11)==1);
+		assert(!b.empty()&&b.size()==1&&b.uniqueSize()==1&&b.contains(11)&&b.count(11)==1);
+	}
+
+	//make sure that the assignment operator functions when the passed bag only has one value
+	b2=b;
+	assert(!b2.empty()&&b2.size()==1&&b2.uniqueSize()==1&&b2.contains(11)&&b2.count(11)==1);
+
+	//test that combine and subtract work when both bags have only one item that is of the same value
+	combine(b,b2,result);
+	assert(result.size()==2&&result.uniqueSize()==1&&result.contains(11)&&result.count(11)==2);
+
+	subtract(b,b2,result);
+	assert(result.size()==0&&result.uniqueSize()==0&&!result.contains(11)&&result.count(11)==0);
+
+	//test that combine and subtract work when both bags have only one item that is of a different value
+	b2.erase(11);
+	b2.insert(10);
+
+	combine(b,b2,result);
+	assert(result.size()==2&&result.uniqueSize()==2&&result.contains(11)&&result.count(11)==1&&result.contains(10)&&result.count(10)==1);
+
+	subtract(b,b2,result);
+	assert(result.size()==1&&result.uniqueSize()==1&&result.contains(11)&&result.count(11)==1&&!result.contains(10)&&result.count(10)==0);
+
+	b=Bag();
+	b2=Bag();
+	assert(b.empty()&&b2.empty()); //make sure that the bags are empty before moving on
+
+	//TESTING WITH THREE UNIQUE VALUES OF VARIOUS AMOUNTS
+	b.insert(10),b.insert(10),b.insert(10);
+	b.insert(9),b.insert(9);
+	b.insert(8);
+
+	assert(!b.empty()&&b.size()==6&&b.uniqueSize()==3);//make sure that the size functions work correctly with larger amounts of items in the bag
+	assert(b.contains(10)&&b.count(10)==3&&b.contains(9)&&b.count(9)==2&&b.contains(8)&&b.count(8)==1); //make sure that the count and contains functions work with larger amounts of items in the bag
+
+	//make sure that the eraseAll function actually removes all instances of the item
+	assert(b.eraseAll(10)==3);
+	assert(!b.contains(10)&&b.count(10)==0);
+
+	//make sure that erase will only get rid of one instance of a function
+	assert(b.erase(9)==1);
+	assert(b.contains(9)&&b.count(9)==1);
+
+	//make sure that erase deletes the item if it removes hte last element
+	assert(b.erase(9)==1);
+	assert(!b.contains(9)&&b.count(9)==0);
+
+	b.insert(10),b.insert(10),b.insert(10);
+	b.insert(9),b.insert(9);
+
+	count=0;
+	int szCount=0;
+
+	for(b.start();!b.ended();b.next()){
+		count++;
+		szCount+=b.currentCount();
+		if(b.currentValue()==10){
+			assert(b.currentCount()==3); //make sure that currentCount returns the proper amount of copies for the appropriate value
+		}
+	}
+	assert(count==b.uniqueSize()&&szCount==b.size()); //make sure that the loop was entered for every unique item in teh bag, and that the tally adds up to the total amount of items in the bag
+
+	b2.insert(11);
+	b2.insert(12);
+	b2.insert(13);
+
+	//make sure that the swap function works with many items in both bags
+	b.swap(b2);
+
+	assert(b.contains(11)&&b.count(11)==1&&b.contains(12)&&b.count(12)==1&&b.contains(13)&&b.count(13)==1); //check that the bags values were swapped properly
+	assert(b2.contains(10)&&b2.count(10)==3&&b2.contains(9)&&b2.count(9)==2&&b2.contains(8)&&b2.count(8)==1);
+
+	b.swap(b2);
+
+	{//make sure that the copy constructor works properly with mny items
+		Bag temp(b);
+		assert(temp.contains(10)&&temp.count(10)==3&&temp.contains(9)&&temp.count(9)==2&&temp.contains(8)&&temp.count(8)==1);
+		assert(b.contains(10)&&b.count(10)==3&&b.contains(9)&&b.count(9)==2&&b.contains(8)&&b.count(8)==1); //verify that orginal bag remained unchanged
+	}
+
+	//make sure that the assignment constructor works when the passed bag has a larger amount of items
+	b2=b;
+	assert(b2.contains(10)&&b2.count(10)==3&&b2.contains(9)&&b2.count(9)==2&&b2.contains(8)&&b2.count(8)==1);
+
+	//makes sure that combine works when both bags have multiple items in them
+	combine(b,b2,result);
+	assert(result.contains(10)&&result.count(10)==6&&result.contains(9)&&result.count(9)==4&&result.contains(8)&&result.count(8)==2);
+	//make sure that the combine function does not alter the two bags
+	assert(b2.contains(10)&&b2.count(10)==3&&b2.contains(9)&&b2.count(9)==2&&b2.contains(8)&&b2.count(8)==1&&b2.size()==6&&b2.uniqueSize()==3);
+	assert(b.contains(10)&&b.count(10)==3&&b.contains(9)&&b.count(9)==2&&b.contains(8)&&b.count(8)==1&&b.size()==6&&b.uniqueSize()==3);
+
+	//make sure that combine works when b is a passed bag and the "result"
+	combine(b,b2,b); //check when b is passed as the first and third argument
+	assert(b.contains(10)&&b.count(10)==6&&b.contains(9)&&b.count(9)==4&&b.contains(8)&&b.count(8)==2);
+
+	b=b2;
+	combine(b2,b,b); //check when b is passed as the second and third argument
+	assert(b.contains(10)&&b.count(10)==6&&b.contains(9)&&b.count(9)==4&&b.contains(8)&&b.count(8)==2);
+
+	b=b2;
+	b.insert(10);
+	b2.insert(9);
+
+	//makes sure that subtract works when both bags have multiple items
+	subtract(b,b2,result);
+	assert(!result.contains(8)&&!result.contains(9)&&result.contains(10)&&result.count(10)==1);
+	//make sure that the subtract function does not alter the two bags
+	assert(b2.contains(10)&&b2.count(10)==3&&b2.contains(9)&&b2.count(9)==3&&b2.contains(8)&&b2.count(8)==1&&b2.size()==7&&b2.uniqueSize()==3);
+	assert(b.contains(10)&&b.count(10)==4&&b.contains(9)&&b.count(9)==2&&b.contains(8)&&b.count(8)==1&&b.size()==7&&b.uniqueSize()==3);
+
+	//make sure that subtract works when b is a passed bag and the "result"
+	subtract(b,b2,b);
+	assert(!b.contains(8)&&!b.contains(9)&&b.contains(10)&&b.count(10)==1);
+}

@@ -1,0 +1,191 @@
+//template to make a generic class that will be created at compile time
+//for appropriate classes
+template <typename T>
+T minimum(T a, T b){
+	if (a<b)
+		return a;
+	else
+		return b;
+}
+
+//could do with the typenames
+template <typename T, typename U>
+T minimum(T a, U b){
+	if (a<b)
+		return a;
+	else
+		return b;
+}
+
+STL
+Vectors
+//an array that is resized as you use it
+//keeps allocating memory when it needs to if the array is now empty
+
+#include <vector>
+using namespace std;
+
+vector<int> vi;
+vi.push_back(10);
+vi.push_back(20);
+vi.push_back(30);
+
+vi.reserve(1000); //reserves memory for 1000 elements
+vi.capacity(); //returns 1000
+
+cout<<vi.size(); //writes 3
+cout<<vi.front(); //writes  10
+cout<<vi.front(); //writes 30
+
+vi[1]=40;
+//vi[3]=50; would not work be cause it is past the end of the array
+
+//vector is full of 10,40,30
+
+vi.pop_back ()// removes the last element
+
+//vector is full of 10,40
+
+vi.at(1)=60;
+
+vi.at(3)=70; //throws exception will only throw exception here? not with [ ]
+
+vector<double> vd(10);
+//vd.size() is 10, each element is 0.0
+
+//CONTINUED ONLINE
+
+
+#include <list>
+using namespace std;
+
+list<int> li;
+
+li.push_back(20);
+li.push_back(30);
+li.push_front(10);
+
+cout<<li.size(); //output 3
+cout<<li.front(); //writes 10
+cout<<li.back(); //writes 30
+
+li.push_front(40);
+li.pop_front();
+
+li.begin();             li.end()
+   v                       v
+  10     20      30
+
+
+for(list<int>::iterator p=li.begin(); p!=li.end();p++){
+	cout<<*p<<endl; //* operator applied to the list iterator, returns reference to teh type of list in teh currently pointed to node
+}
+
+
+//iterator is within list
+//may have an iterator for other classes, but it would be implemented differently
+//when saying p++; it grabs the "next" item pointer for the list node
+
+
+
+//can have a function that takes a function as an argument
+//pointers to functions
+template<typename Iter, typename Func>
+Iter find_if(Iter b, Iter e, Func f){
+	for(;b!=e;b++)
+		if(f(*b))
+			break;
+	return b;
+}
+
+bool isNegative(int k){
+	return k<0;
+}
+
+bool isEmpty(string s){
+	return s.empty();
+}
+
+
+//pointer to function:
+bool (*f)(int)=isNegative; //f is a function that returns a bool and takes an int
+f=isPositive; //f is now replaced by ispositive function call
+
+
+bool isGreater(int i, int j){
+	return i<j;
+}
+
+bool makesLessThan(const Employee& e1, const Employee& e2){
+
+	return e1.salary()<e2.salary();
+}
+
+bool hasBetterRecord(const Team& t1, const Team& t2){
+	if(t1.wins()>t2.wins())
+		return true;
+	if(t1.wins()<t2.wins())
+		return false
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

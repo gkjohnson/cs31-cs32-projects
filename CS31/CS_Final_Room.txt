@@ -1,0 +1,10 @@
+Lec1(my Lecture) A-N -> WS Young Hall CS50
+Lec1(my Lecture) O-Z -> WS Young Hall CS24
+
+2 8.5x11 sheets for test
+
+reading code
+code is supposed to do - find the bug and fix it
+write a function that does THIS
+write declaration for the class and a function for it
+Chapters from book listed on the syllabus

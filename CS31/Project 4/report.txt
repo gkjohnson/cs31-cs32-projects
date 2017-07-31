@@ -1,0 +1,108 @@
+a.
+ - The most difficult part of this project for me was trying to make split function without creating an extra array
+ - Picking data to test was also very difficult this time
+
+b.
+string people[8] = {"adam", "jamie", "tory", "kari","grant", "buster", "scottie", "narrator"};
+string peopleSub[5] = {"tory", "kari","grant","Buster","Adam"};
+string people2[]={"adam","jamie","tory","buster"};
+	- these three are used to test that string comparisons are done correctly and to match the examples given in the text
+	- "peopleSub" without the last two elements is a substring of "people" 
+	- "people2" is used specifically to test the differ function, because "people" and "people2" are identical up until the 3rd element
+string num[10] = {"1","2","3","4","5","6","7","8","9","10"};
+	-easier to see the result of the "flip" and "rotate" functions
+string numRand[15]={"5","3","8","2","8","3","3","6","1","1","7","8  ","4","7","2"};
+	-used to easily check the split function
+
+Also tested the example cases and arrays in the spec
+
+function setAll:
+(num,-10,"") - expected: returns -1, because the size is negative
+(num,0,"zero")- expected: returns 0, and no elements are changed
+(num,5,"Test") - expected: returns 5, first five elements in the array are now set to "Test"
+(num,10,"Test2") - expected: returns 10, every element in the array are now set to "Test2"
+
+function lookup:
+(people,-10,"adam") - expected: return -1, because the size is negative
+(people,0,"adam") - expected: return -1, because "adam" could not be found in 0 elements
+(people,8,"Adam") - expected: return -1, because Adam is capitalized
+(people,8,"0") - expected: return -1, because "0" is not in the array
+(people,8,"scottie") - expected: return 6, because "scottie" is in the sixth position
+(people,4,"scottie") - expected: return -1, because "schottie" is not in the first four positions
+
+function positionOfMax:
+(people,-10) - expected: return -1, because the size is negative
+(people,0) - expected: return -1, because the array has no elements
+(people,8) - expected: return 2, because "tory" is the "largest" string
+(people,2) - expected: return 1, because "jamie" is the "largest" string out of the first two
+(numRand,15) - expected: return 2, because the both the 2nd, and the 11th position hold the biggest string, but 2 is earlier
+
+function rotateLeft:
+(num,1,0) - expected: reuturn 0, because it is the only element, and array is unchanged
+(num,-10,1) - expected: return -1, because the size is negative
+(num,10,-1) - expected: return -1, because the position is negative
+(num,10,20) - expected: return -1, because the position is bigger than the size
+(num,0,0) - expected: return -1, because 0 elements means that no elements can be accessed to be "rotated"
+(num,6,3) - expected: return 3, and elements 2 though 5 should be rotated left
+(num,10,4) - expected: return 4, and elements 5 through 9 should be rotated left
+
+function rotateRight:
+(num,1,0) - expected: reuturn 0, because it is the only element, and array is unchanged
+(num,-10,1) - expected: return -1, because the size is negative
+(num,10,-1) - expected: return -1, because the position is negative
+(num,10,20) - expected: return -1, because the position is bigger than the size
+(num,0,0) - expected: return -1, because 0 elements means that no elements can be accessed to be "rotated"
+(num,6,3) - expected: return 3, and elements 0 though 2 should be rotated left
+(num,10,5) - expected: return 5, and elements 0 through 4 should be rotated left
+
+function flip:
+(num,-10) - expected: returns -1, because the size is negative
+(num,1) - expected: returns 1, and array is unchanged
+(num,0) - expected: returns 0, and array looks the same
+(num,5) - expected: return 5, and the first five elements are flipped
+(num,10) - expected: return 10, and the entire array is flipped
+
+function differ:(people,8,people2,4)
+(people,-10,people,8) - expected: returns -1, because size is negative
+(people,8,people,-10) - expected: returns -1, because size is negative
+(people,0,people,8) - expected: returns 0, because first array differs/ends at position 0
+(people,8,people,0) - expected: returns 0, because second array differs/ends at position 0
+(people,5,people,8) - expected: returns 5, becaue the first array ends at element 5
+(people,8,people,5) - expected: returns 5, because the second array ends at element 5
+(people,8,people,5) - expected: returns 8, because hte arrays are the same
+(people,8,num,15) - expected: returns 0, because the second array differs from the first by the first element
+(people,8,people2,4) - expected: returns 3, because the array differs at position 3
+
+function subsequence:
+(people,-10,people,8) - expected: returns -1, because the size is negative
+(people,8,people,-10) - expected: returns -1, because the size is negative
+(people,5,people,8) - expected: returns -1, because the second array is larger than the first
+(people,8,people,5) - expected: returns 0, because the subsequence would start at the beginning
+(people,0,people,8) - expected: returns -1, because the subsequence cannot be found in an array that is smaller
+(people,8,people,0) - expected: returns 0, because the empty array is a subsequence of every array
+(people,8,people,8) - expected: returns 0, because teh subsequence would start at teh beginning
+(people,8,num,4) - expected: returns -1, because there is no match anywhere
+(people,8,peopleSub,5) - expected: returns -1, because it differs at position 3
+(people,8,peopleSub,3) - expected: returns 2, because the subsequence starts at 2
+
+function lookupAny:
+(people,-10,people,8) - expected: returns -1, because the size is negative
+(people,8,people,-10) - expected: returns -1, because the size is negative
+(people,8,people,0) - expected: returns -1, because there is nothing to match
+(people,0,people,8) - expected: returns -1, because there is nothing to match
+(people,4,people,8) - expected: returns 0, because there is a match at the beginning
+(people,8,people,2) - expected: returns 0, because there is a match at the beginning
+(people,8,peopleSub,3) - expected: returns 2, because there is a match starting at position 2
+(people,8,peopleSub,5) - expected: returns 2, because the "Adam" at the end of the subsequence is capitolized
+
+function split:
+(people,-10,"") - expected: returns -1, because the size is negative
+(people,0,"") - expected: returns 0, because there are no elements smaller than splitter
+(people,4,"m") - expected: returns 3, because the first three are less than the splitter
+(people,8,"m") - expected: returns 5, because the first 6 elements are less than splitter
+(people,8,"z") - expected: returns 8, all of the elements are less than the splitter
+(people,8,"A") - expected: returns 0, because all of the elements are greater than the splitter
+(people,0,"A") - expected: returns 0, because there are no elements, but no invalid element is being accessed
+(numRand,15,"3") - expected: returns 4, because there are four elemens taht are less than three
+(numRand,15,"9") - expected: returns 15, because "9" is bigger than all other elements
+(numRand,15,"0") - expected: returns 0, becuase "0" is less than all

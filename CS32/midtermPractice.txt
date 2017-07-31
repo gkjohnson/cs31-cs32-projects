@@ -1,0 +1,233 @@
+1a.
+SortedLinkedList::SortedLinkedList()
+	:m_head(NULL),m_tail(NULL),m_size(0)
+{
+}
+
+b.
+
+bool SortedLinkedList::insert(const ItemType &value)
+{
+	ItemType curr=m_head;
+
+
+	while(curr!=NULL&&curr->m_next!=NULL){
+		if(curr->m_value==value){
+			return true;
+		}	
+		if(curr->m_value>value){
+			break;
+		}
+	
+		curr=curr->m_next;
+	}
+	
+	if(curr==NULL){
+		m_head=new Node();
+		m_tail=m_head;
+		m_head->m_value=value;
+		m_head->m_next=NULL;
+		m_head->m_prev=NULL;
+	}else if(curr==m_head){
+		Node* temp=new Node();
+		temp->m_value=value;
+		temp->m_next=m_head;
+		temp->m_prev=NULL;
+		
+		temp->m_next->m_prev=temp;
+		
+		m_head=temp;
+	}else if(curr->m_next==NULL){
+		Node* temp=new Node();
+		temp->m_value=value;
+		temp->m_next=NULL;
+		temp->m_prev=curr;
+		curr->m_next=temp;
+		m_tail=temp;
+	}
+	else{	
+		Node* temp=new Node();
+		temp->m_value=value;
+		temp->m_next=curr;
+		temp->m_prev=curr->m_prev;
+		
+		temp->m_next->m_prev=temp;
+		temp->m_prev->m_next=temp;
+	}
+	
+	m_size++;
+}
+
+c.
+Node* SortedLinkedList::search(const ItemType &value) const
+{
+
+	Node* curr=m_head;
+	
+	while(curr!=NULL){
+
+	if(curr->m_value==value){
+		return curr;
+	}	
+	curr=curr->m_next;
+	}
+	return NULL;
+}
+
+d.
+void SortedLinkedList::remove(Node *node)
+{
+	if(node==m_head){
+		m_head=node->m_next;
+	}
+	if(node==m_tail){
+		m_tail=node->m_prev;
+	}
+	
+	if(node->m_prev!=NULL){
+		node->m_prev->m_next=node->m_next;
+	}
+	if(node->m_next!=NULL){
+		node->m_next->m_prev=node->m_prev;
+	}
+	delete node;
+	
+	m_size--;
+}
+
+e.
+void SortedLinkedList::printIncreasingOrder() const
+{
+	Node* curr=m_head;
+	while(curr!=NULL){
+		std::cout<<curr->m_value<<std::endl;
+		curr=curr->m_next;
+	}
+}
+
+f.
+the search function returns a pointer to a Node, which can then be modified
+this function should be moved to the private section, or change so that it returns
+a bool value rather than a pointer
+
+SortedLinkedList s;
+s.insert(99);
+s.insert(100);
+s.insert(101); //list holds 99,100,101 in that order
+
+s.search(100)->m_value=10; //list now holds 99,10,101, which is not in the correct order
+
+2.
+move the cout statement below the printArrayInOrder recursive function call
+so that it gets to the last function call in the stack, then prints
+what would be the last value before popping back out of the stack one by one
+printing each value as it popped up
+
+3.
+int gcd(int m, int n){
+
+	if(n%m==0){
+		return m;
+	}
+	
+	int temp=n-m;
+	
+	if(m>temp){
+		return gcd(temp,m);
+	}else if(m<temp){
+		return gcd(m,temp);
+	}
+	
+	return m;
+}
+
+4.
+int powerOfTwo(int x){
+	if(x==0){
+		return 1;
+	} else if(x==1){
+		return 2;
+	}
+	
+	return powerOfTwo(x-1)+2;
+
+}
+
+5.
+b1 -A
+-m_msg: "Orange"
+-m_a
+--m_msg: "Apple"
+
+b2 -B
+-m_msg: "Orange"
+-m_a
+--m_msg: "Apple"
+
+b3 -A
+-m_msg: "Apple"
+-m_a
+--m_msg: "Apple"
+
+"Orange"
+"Apple"
+"Apple"
+"Apple"
+"Orange"
+"Apple"
+"Orange"
+"Apple"
+"Apple"
+
+6,3
+
+"Apple"
+"Apple"
+"Apple"
+"Apple"
+"Orange"
+"Apple"
+"Orange"
+"Apple"
+"Apple"
+
+7,2
+
+
+bool balanced(const string &exp)
+{
+	stack<char> s;
+	
+	for(int i=0;i<exp.size();i++){
+
+		if(s[i]=='['||s[i]=='{'||s[i]=='('){
+			
+			s.push(s[i]);
+			
+		}else if(s[i]==']'||s[i]=='}'||s[i]==')'){
+			char t=s.top();
+			s.pop();
+			if(s.empty())
+				return false;
+			if(s[i]==']'&&t!='[')
+				return false;
+			if(s[i]=='}'&&t!='{')
+				return false;
+			if(s[i]==')'&&t!='(')
+				return false;
+		}
+	}
+	
+	if(!s.empty()){
+		return false;
+	}
+	return true;
+}
+
+
+
+
+
+
+
+

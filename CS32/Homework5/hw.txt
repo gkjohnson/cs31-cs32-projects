@@ -1,0 +1,189 @@
+1.
+c.
+Order the nodes are visited:
+50
+ 20
+  10
+ 20
+  40
+   30
+    25
+   30
+    35
+   30
+  40
+   45
+  40
+ 20
+50
+ 60
+  70
+   65
+  70
+   80
+    75
+
+in order traversal
+---
+10
+20
+25
+30
+35
+40
+45
+50
+60
+65
+70
+75
+80
+
+
+
+pre order traversal
+---
+50
+ 20
+  10
+  40
+   30
+    25
+    35
+   45
+ 60
+  70
+   65
+   80
+    75
+
+post order traversal
+---
+  10
+    25
+    35
+   30
+   45
+  40
+ 20
+   65
+    75
+   80
+  70
+ 60
+50
+
+2.
+a.
+
+(6
+  (3
+    (1)
+    (2)
+  (5
+    (4)
+    ( )
+b.
+[6][3][5][1][2][4][ ]
+
+c.
+(5
+  (3
+    (1)
+    (2)
+  (4
+    ( )
+    ( )
+
+[5][3][4][1][2][ ][ ]
+
+
+
+3.
+a.
+
+struct Node{
+
+ int data;
+
+ Node* parent;
+ 
+ Node* left;
+ Node* right;
+}
+
+b.
+// take the current node, and the inserted data. Compare it to the node's data
+// if the new data is less than the current node's data, then consider the left Node
+// otherwise, consider the node to the right
+// if the considered Node pointer is not NULL
+	//then repeat with the considered Node
+// Otherwise if the considered Node IS NULL
+	//create a new Node at that pointer
+	//pass it the new data to be inserted
+	//set its left and right nodes to NULL and set its parent to the current node
+
+4.
+a.
+Adjacency Matrix:
+ A B C D E F G H I
+A0 1 1 0 0 0 0 0 0
+B0 0 0 0 0 0 0 1 0
+C0 0 0 1 1 0 0 0 0
+D0 1 0 0 0 0 0 1 0
+E0 0 0 0 0 0 1 0 0
+F0 0 0 0 0 0 1 0 1
+G0 0 1 0 0 0 0 1 0
+H0 0 0 0 0 0 1 0 0
+I0 0 1 0 0 0 0 0 0
+
+
+Adjacency List:
+A -> B C
+B -> H
+C -> D E
+D -> B H
+E -> G
+F -> G I
+G -> C H
+H -> G
+I -> C
+
+b.
+"H" / "G" are sometimes visited twice to check 
+if the shortest path has been found
+
+E,G,H,C,D,B
+
+E,G,C,D,H,B
+
+E,G,C,D,B,H
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

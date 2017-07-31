@@ -1,0 +1,201 @@
+TREES
+---
+
+tree uses recursion often
+
+Elizabeth
+ Charles
+  William
+  Harvy
+ Anne
+  Peter
+   Savannah
+  Zara
+ Andrew
+  Beatrice
+  Eugene
+ Edward
+  Louise
+  James
+
+
+
+
+print the tree out like above
+
+void printtree(Node* p){
+ if(p!=NULL)
+ {
+  cout<<p->name<<endl;
+  for(int i=0;i<p->children.size();i++){
+   printtree(p->children[i]);
+   
+  }
+ }
+}
+
+// but then how to keep track of the the indentations? another argument needs to be passed
+// Approach 1:
+void printtree(Node* p){
+ printtreeAux(p,0);
+}
+void printtreeAux(Node* p, int depth){
+ if(p!=NULL)
+ {
+  cout<<string(2*depth,' ')<<p->name<<endl;
+  for(int i=0;i<p->children.size();i++){
+   printtree(p->children[i],depth+1);
+   
+  }
+ }
+}
+
+OR use a default parameter
+
+
+Patterns
+---
+
+preorder traversal:
+process the node THEN the children
+
+Elizabeth
+ Charles
+  William
+  Harvy
+ Anne
+  Peter
+   Savannah
+  Zara
+ Andrew
+  Beatrice
+  Eugene
+ Edward
+  Louise
+  James
+
+or
+
+postorder traversal:
+process the children THEN the node
+
+  William
+  Harvy
+ Charles
+  Peter
+   Savannah
+  Zara
+ Anne
+  Beatrice
+  Eugene
+ Andrew
+  Louise
+  James
+ Edward
+Elizabeth
+
+Binary Tree
+---
+
+A tree with two children, where the left and right child are distinguished
+
+A binary tree is either:
+1. empty
+2. a node with a left binary subtree and a right binary subtree
+
+You can make any tree into a binary tree
+
+struct Node{
+  string name;
+  Node* eldestChild;
+  Node* nextYoungerSibling;
+
+}
+
+
+binarys used to search. lesser items than the node are to the left, greater than are to the right
+
+Binary Search Tree
+---
+1. Empty
+2. a node with a left side that is less than the node
+	and a right side that is greater
+
+every leaf node above trivially satisfies the requirements for a BST because its children are NULL
+
+
+Alphabetically ordered:
+
+Lisa
+ Bart
+  -
+  Homer
+ Marge
+  Maggie
+  Patty
+   Selma
+
+void printinAlphaOrder(Node* p)
+{
+ if(p!=NULL){
+  print(p->left);
+  cout<<p->name<<endl;
+  print(p->right);
+
+ }
+
+}
+
+inorder:
+- process left, then right
+
+When making a binary search tree, you sohuld make sure that the list is not already orderd
+
+
+// What if we delete lisa?
+Lisa
+ Bart
+  -
+  Homer
+ Marge
+  Maggie
+  Patty
+   Selma
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+2.
+6,3
+6,2
+7,2
+8,2
+8,3
+8,4
+7,4
+8,4
+6,4
+5,4
+5,5
+5,6
+
+4.
+6,3
+5,3
+6,4
+6,2
+4,3
+5,4
+7,4
+7,2
+4,2
+5,5
+8,4
+8,2
+
+The Stack removes the most recently input Coordinate from the list, while
+the Queue removes the Coordinate that was input first. Because both algorithms
+input the the Coordinates into the stack or queue in the same order, but remove
+the Coordinates from different "ends" of lists, the coordinates are visited
+in different orders.
+

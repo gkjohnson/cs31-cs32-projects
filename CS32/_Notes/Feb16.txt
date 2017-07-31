@@ -1,0 +1,229 @@
+set<int> si; //a "bag" with no duplicates
+si.insert(10);
+si.insert(30);
+si.insert(10);
+cout<<si.size(); //2 because 10 was not inserted a second tiem because it was already there
+
+multiset<int> mi; //essentially what we called a "bag"
+
+//taking an algorithm and examining it - time/memory used/etc
+
+for(int i=0; i<N; i++){
+	a[i]*=2;
+}
+
+//OR
+
+
+for(int i=0; i<N; i++){
+	a[i]=a[i]+a[i];
+}
+//difference in time is negligible
+//both of these algorithms for doubling every item in the array grow linearly
+//an algorithm could grow logarithmically or quadratically. It only really begins to matter once you get to BIG numbers of elements (large N)
+
+
+
+//measuring time is dependent on a machine by machine basis - not a very good method for comparing in papers etc
+//big N concerns us, as well as amount of steps (adding two numbers, assingment etc);
+//the above algorithms are somewhere along the lines of 4N+1. the high order term is what matters (4N) because as N gets huge, the other term does not matter
+
+//if f(N) is a chaotic graph, but the linear graph N acts as an upperbound at large N (f(N) remains under N)
+// called "f(N) is O(N)" (order N). They are related to each other. If you double N, then f(N) will roughly be doubled. the steps can be scaled in this way
+// if f(N) takes 5 seconds to run with 10000 items, then with a million it might take 500 seconds
+
+
+// if you are looking for something in an algorithm in an array of N items, then it is a function of N at the worst case if it does not find what it is
+// looking for. If it finds it, then it could be far better or in between.
+
+// Worst case : linear N - Average case : linear N/2 - best Case
+
+// with other constraints, an average case may not be important - EVERY TIME you must meet the constraint. (in space, when dodging objects, you must have enough time to dodge)
+// this is for a linear search
+
+// other cases (guessing a number) - linear: guess 1, guess 2, guess 3, etc.
+	//1024 items
+	//Best case: 1
+	//average case: 1024/2
+	//worst case: 1024
+
+ - nonlinear: guess 500 (greater than/less than), guess 250/750, etc. - binary search
+	//1024 items
+	//Best case: 1
+	//Average Case: 10
+	//worst case: 10 (2^10=1024 - with each question, you lower the exponent.) 
+	//this is a function of Log2(N)
+
+
+binary vs linear search step numbers:
+
+		avg		worst
+1000		10		10
+		500		1000
+
+1000000		20		20
+		500000		1000000
+
+1000000000	30		30
+		500000000	100000000
+
+
+
+logb(N)=loga(N)/loga(b) // the logarithmic growth patterns are related. always proportional
+
+
+graphing "# of Steps x N
+
+//number of steps it takes to access an algorithm in the array is constant (because it can just access the memory, no searching) - O(1)
+//linear search grows linearly (more elements adds the same amount of steps each time) - O(N)
+//binary algorithm grows logarithmically - O(log(N))
+
+
+
+//A quadratic growth pattern- at higher order Ns, it takes far longer to go through the algorithm
+//adding two matrices (in the form of arrays) together
+for(int i=0; i<N;i++){
+	for(int j=0;j<N;j++){
+		c[i][j]=a[i][j]+n[i][j]; //this step is constant steps- always takes the same amount of time, includng the comparison and increment of j. lets call this number K (proportional to 1)
+					//This is done N times, though.
+					//k*N
+	}
+	//the outside loop is done N times, as well. which equals k*N*N
+}
+
+//A quadratic growth pattern- at higher order Ns, it takes far longer to go through the algorithm
+//adding two matrices (in the form of arrays) together - now only dealing with the lower half of the matrices
+for(int i=0; i<N;i++){
+	for(int j=0;j<i;j++){
+		c[i][j]=a[i][j]+n[i][j]; //this step is constant steps- always takes the same amount of time, includng the comparison and increment of j. lets call this number K (proportional to 1)
+					//This is done N times, though.
+					//k*i
+
+	}
+	//this ends up being k*0+k*1+K*2+...+k*N= k(1+2+3+4...+N)
+	//sum of numbers 1 to N = (N(N+1))/2=1/2 *N^2+1/2N= O(N^2)
+}
+
+//also O(N*LogN) algorithms - bigger than linear O(N) but smaller than O(N^2)
+//analyzing algorithm steps can yield dramatic increase in performance
+//linear algorithms
+
+
+
+
+//Examples:
+
+//find the smallest item and put it in the right place
+// to the left of the barrier is in the right place
+				steps:
+| 5 3 7 6 1 8 2 4		N
+1 | 3 7 6 5 8 2 4		N-1
+1 2 | 7 6 5 8 3 4		N-2
+1 2 3 | 6 5 8 7 4		N-3
+1 2 3 4 | 5 8 7 6		N-4
+1 2 3 4 5 | 8 7 6		N-5
+1 2 3 4 5 6 | 7 8		2
+1 2 3 4 5 6 7 | 8 // sorted	~1/2 * N^2= O(N^2)
+
+// ^ Called "Selection Sort" ^
+
+EX:
+//check the neighbor, and switch them if necessary. After every pass,
+//the next largest item will be in the right place. every pass,
+// you only need to check N-1 items, because the remaining will be correct
+
+				steps:
+5 3 7 6 1 8 2 4 |		N
+3 5 6 1 7 2 4 | 8		N-1
+3 5 1 6 2 4 | 7 8		N-2
+3 1 5 2 4 | 6 7 8		N-3
+1 3 2 4 | 5 6 7 8		N-4
+1 2 3 | 4 5 6 7 8 // can stop	O(N^2), but may stop early (can get lucky) - "room for improvement"
+
+// ^ Called "Bubble Sort" ^
+//maybe asked to sort an array that is already sorted - this stops early if it is already sorted, "selection sort does not
+//many people use this because books introduce it first - BAD - tehre are better ways
+
+
+				steps
+5 | 3 7 6 1 8 2 4		1 * 1/2
+3 5 | 7 6 1 8 2 4 //lucky	2 * 1/2
+3 5 7 | 6 1 8 2 4		3 * 1/2
+3 5 6 7 | 1 8 2 4 //unlucky	4 * 1/2
+1 3 5 6 7 | 8 2 4		5 * 1/2
+1 3 5 6 7 8 | 2 4
+1 2 3 5 6 7 8 | 4
+1 2 3 4 5 6 7 8 |		(N-1) * 1/2
+				(N-1 + 1 + 2 + 3 +...) * 1/2
+				N^2 * 1/2 * 1/2 = N^2 * 1/4
+
+
+//^ Called "Insertion Sort" ^
+
+
+
+
+//MERGE SORT - as discussed previously
+
+if(N>=2){
+	//sort the left half
+	//sort the right half
+	//merge -> O(N)
+
+}
+
+
+T(N) = T(N/2) + T(N/2) + N
+T(N) = T(N/2)*2 + N
+
+claim: T(N)=NLog2N
+
+2*T(N/2)+N=2*(N/2*Log(N/2)) + N
+2*T(N/2)+N=(N*Log2(N/2)) + N
+2*T(N/2)+N=N*(Log2(N)-log2(2)) + N
+2*T(N/2)=N*(Log2(N)-log2(2))
+2*T(N/2)=N*(Log2(N)-log2(2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

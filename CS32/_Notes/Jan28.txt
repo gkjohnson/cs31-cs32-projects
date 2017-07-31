@@ -1,0 +1,123 @@
+class Pet;
+
+class Cat : public Pet; //A Cat "is-a" Pet
+class Dog : public Pet; //A Dog "is-a" Pet
+
+class Tail;
+
+class Cat{
+public:
+ //functions
+private:
+ Tail t; //A Cat "has-a" tail
+}
+
+"is-a" relationship (Cat to Pet) - inherit
+"has-a" relationship (Cat to Tail) - data member
+
+
+
+
+class Animal{
+public: 
+ virtual void speak()=0 //declared virtual so this can be overwritten. add "=0" onto the end to make it pure virtual, meaning it HAS to be overwritten
+ //if there is a pure virtual function, then the class cannot be created
+ //if it is declared virtual, then it is used a function pointer. Normally, the code for the function is decided at compile time. But if virtual, then it chooses at run time (because an Animal pointer mightbe pointing to a Dog
+}
+
+class Dog: public Animal{
+public:
+ void speak(){
+  cout<<"woof";
+ }
+}
+
+class Cat: public Animal{
+public:
+ void speak(){
+  cout<<"meow";
+ }
+}
+
+
+Animal *A;
+Dog D;
+Cat C;
+
+A=&D; //the animal can point to a Dog
+A->speak(); //this code woldn't call Animal's "speak" function, not Dog's, because "speak" was not declared virtual
+
+
+//You want to use these because of "interface inheritance" - it creates a generic interface for many classes
+//you can call ->speak() on any animal pointer (no matter if it points to a dog or a cat) and it will work
+//or you can make something JUST an interface, so it can be used for a lot of classes, and it is guaranteed to have these functions
+//if something underneath the interface changes drastically, then it can be changed easily by changing the code underneat the interface
+
+   uses this interface           ServerInterface can use the specific code for either server, and then i never have to change MyCode part because it uses the generic interface
+MyCode     ->     ServerInterface     -->      MicrsoftServer
+                                      \
+                                       ->      OracleServer
+
+
+//A destructor should be declared virtual as well, because if an animal pointer points to a dog, and you delete it
+//then only the animal pointer will be called and not the Dogs - NOT GOOD
+
+virtual ~Animal();
+~Dog();
+
+
+Construction:
+Animal()->Dog();
+
+Destruction:
+~Dog()->~Animal();
+
+
+
+to check what type it is:
+to see if a Cat is an animal
+
+if ((Animal)Cat!=NULL){
+ //it must be an animal!
+}
+
+if it cannot be cast as an animal, then it will return a null pointer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

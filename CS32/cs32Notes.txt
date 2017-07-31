@@ -1,0 +1,202 @@
+X Pointers
+X Dynamic Arrays
+X Resource Management
+X Linked Lists
+X Stacks and Ques
+X Inheritance
+X Classes
+X Polymorphism
+X Object Oriented Design Principles
+X Recursion (virtual)
+X Templates
+STL:
+ X Vector
+ X Stack
+ X Queue
+ X list
+ X Set
+ X MultiSet
+ X Map
+ X MultiMap
+ X unordered_map
+Algorithm efficiency
+Sorting:
+ Bubble Sort
+ Insertion Sort
+ Merge Sort
+ Quick Sort
+ selection sort
+ Introspective Sort
+More Data Structures:
+ Trees
+  2-3 tree
+  Binary search tree
+  Complete Binary tree
+  Tree-based Tables
+  Trees and Arrays
+ Hash Table
+ Priority Queue
+ Heap
+ Graphs
+
+
+Pointers
+int* ptr; //makes a new pointer
+int x=10;
+ptr=&x; //& returns a pointer to the variable
+*ptr=20; //x is now 20. * dereferences
+
+STL::Vector
+header: #include <vector>
+abstraction: Dynamically resizeable array that grows as you add more objects
+
+advantages:
+ access any element quickly
+ add/remove any element from the end quickly
+ behaves like an array
+ iterating is O(N)
+disadvantages:
+ slow to insert in the middle
+ find is O(N)
+uses:
+ when you will iterate over everything a lot (can specify the amount of steps per iteration)
+ in place of a dynamically allocated array
+ 
+STL::List
+header: #include <list>
+abstraction: doubly linked list
+
+advantages:
+ quick insertion and removal
+ quick moving of elements
+ iterating is quick O(N)
+
+disadvantages
+ find is O(N) - linear
+ must iterate over everything to get one item
+uses:
+ ONLY time to use this over a vector is when you need to insert or remove a lot
+ can sort easily
+ use when you need to sort/remove a lot
+
+STL::Stack
+header: #include <stack>
+abstraction: First in Last out structure
+
+advantages:
+ context specific
+ good when only the top item is needed
+ good for parsing the mathematical strings
+ good for depth first searching
+
+STL::Queue
+header: #include <queue>
+abstrction: First in First out structure
+
+advantages:
+ context specific
+ good for breadth first search
+ 
+STL::Set/MultiSet
+header: #include <set>
+abstraction: implemented as a self ordering binary search tree
+	Set: has only one of an item
+	Multiset: can have multiple of the same item
+
+advantages:
+ is always ordered
+ to find O(logN)
+ insert is O(logN)
+ can iterate in order
+ 
+disadvantages
+ must be able to compare using < operator (less than)
+ search is slower than hash table
+ no direct access
+
+STL::Map/Multimap
+header: #include <map>
+abstraction: implemented as a self ordering binary search tree
+	Map: has only one pair of an item (key value pair)
+	MultiMap can have multiple of the same item
+
+advantages:
+ is always ordered
+ to find O(logN)
+ insert is O(logN)
+ can iterate in order
+ 
+disadvantages
+ must be able to compare using < operator (less than)
+ search is slower than hash table
+ no direct access
+
+STL::unordered_map
+header: #include <map>
+abstraction: implemented as an open hash table
+
+advantages:
+ constant insert
+ to find O(1)
+ insert is O(1)
+ deletion is o(1)
+ 
+disadvantages:
+ unordered
+
+uses:
+everything
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

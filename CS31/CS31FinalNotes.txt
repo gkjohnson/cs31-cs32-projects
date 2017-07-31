@@ -1,0 +1,12 @@
+cs31.posterous.com
+
+classes vs structs: public vs private, functions, constructor and destructor
+- classes are private by default, struct is private by default
+- inside every member function, there is a "this" pointer that points to the object itself. It is implicit
+- defines type
+
+delete and new
+- int *ptr = new int[10];  --  allocates memory for an array of 10 ints
+- delete[] ptr;  --  releases the memory for the array pointed to
+- int *ptr2 = new int; -- allocates memory for an int
+- delete ptr2; -- releases the memory pointed to by 

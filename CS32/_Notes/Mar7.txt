@@ -1,0 +1,133 @@
+closed Hash table/open addressing
+
+No collisions - if two strings hash to the same spot, do not fill it with both, put it
+somewhere else based on a fixed rule - often just goes to teh next bucket
+
+Lucy->2
+Ricky->4
+Ethel->2
+Fred->3
+
+0
+1
+2 Lucy
+3 Ethel
+4 Ricky
+5 Fred
+
+Open Hash table
+
+every bucket it as a linked list
+
+
+
+
+
+
+
+
+Yes you have to sort through a linked list, so its order N, but its 1/10000 N because
+it is uniformly distributed. Only really gets bad when you get to REALLY high N. not
+worth using LogN
+
+Hash tables usually have a Load Factor:
+# of buckets/# of itesms
+
+If the load factor gets to high, allocate new buckets
+
+Re hash when it gets to high
+go through every item in teh bucket and rehash it to the new number of buckets
+With a linked list, the items will likely not go back into the same bucket
+
+Not constant time, but "amortized" constant time.
+Inserting cannot be garanteed to be constant time, becuase the insertion may trigger
+the rehash. ON AVERAGE, it will be constant time
+
+When it needs to be rehashed, it takes a LONG time. You can spread the operations out
+Keeping two tables - rehas two items at a time with each operation. Con: you now have
+to look in two places - slightly slower
+
+hash function
+
+FNV function
+
+unsigned int h=2166136261
+for each ch
+{
+ h+=c;
+ h*=16777619
+}
+return h;
+
+then mod h (h%buckets) by the number of buckets
+
+With Hashtable, you can only really look something up by one kind of information
+you could have two tables/indexes. for Students: one table with ID that holds the
+student object. Then have a name table that will point to the correct object in the
+ID class
+
+
+
+priority ques
+Not First in last out, but highest priority is out first
+
+A complete binary tree is one that has every row filled up, except for the last. The
+bottom rows are filled from left to right
+
+A (max) "heap" is a complete binary tree where the value at every node is >= all
+the values in its subtrees
+
+	90
+   40        80
+30    10  20    50
+
+insert - insert item in to the next item that is appropriate for a complete binary
+tree. If the new item is bigger than the things above it, move it upward. "bubble up"
+the new value
+
+insert 70
+step 1
+             90
+        40        80
+     30    10  20    50
+   70
+step 2
+             90
+        40        80
+     70    10  20    50
+   30
+step 3
+             90
+        70        80
+     40    10  20    50
+   30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

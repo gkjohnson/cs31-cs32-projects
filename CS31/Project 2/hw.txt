@@ -1,0 +1,74 @@
+1:
+endlendl
+grendel
+
+2:
+It first asks the user to input a number for the "side" variable, then prints out that number of lines with each line having one more '#' symbol than the last
+
+3:
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int side;
+
+	cout << "Enter a number: ";
+	cin >> side;
+
+	for (int i = 0; i < side; i++)
+	{
+		int j=0;
+		while (j <= i)
+		{
+			cout << '#';
+			j++;
+		}
+		cout << "\n";
+	}
+}
+
+4:
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int side;
+
+	cout << "Enter a number: ";
+	cin >> side;
+
+	if(side>0){
+		int i=0;
+		do{
+			int j=0;
+			while (j <= i)
+			{
+				cout << '#';
+				j++;
+			}
+			cout << "\n";
+			i++;
+		}while (i < side);
+	}
+}
+
+5:
+switch(year){
+	case 2003:
+		cout << "Schwarzenegger";
+		break;
+	case 1998:
+		cout << "Davis";
+		break;
+	case 2010:
+		cout << "Who knows?";
+		break;
+	case 1990:
+	case 1994:
+		cout << "Wilson";
+		break;
+	default:
+		cout << "Someone";
+}

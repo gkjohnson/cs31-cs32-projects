@@ -1,0 +1,161 @@
+a.
+- writing the second function, "calculateScore", was definitely the most difficult part. At first I tried to write it without creating another
+array within the funtion, but I ending up with 5 or 6 nested loops and it got far too messy.
+
+b.
+stardardizeCriteria function:
+
+cycle through the criteria:
+	set every character in cStrings of word1 and word2 arrays to lowercase
+
+cycle through the criteria:
+	cycle through the criteria following:
+		if the cstrings in different criteria for word1 are identical and in word2 are identical
+			set criteria with the smaller distance's distance to -1, so it will get deleted later
+
+Cycle through the criteria until everything has been cycled through:
+	if the criteria's distance is not positive OR if word1 or word2 have zero characters
+		plan to delete the criteria
+	if any  character in word1 has a non alphabetical character
+		plan to delete the criteria
+	if any  character in word2 has a non alphabetical character
+		plan to delete the criteria
+	
+	if the criteria is planned to be deleted
+		shift all of the information following the current criteria one to the left in the three arrays
+		decrement the amount of criteria
+	
+return the amount of criteria
+
+---
+
+calculateScore function:
+
+copy the document into a new array
+
+Cycle through every character in the document until every character is checked:
+	make every alphabetical character lowercase
+	if a character is not alphabetical, a space, or the zero byte
+		remove it by shifting all following elements one to the left
+
+Cycle through every criteria
+	Cycle through every character in the document
+		if the current criteria has already been found in the document
+			move on to the next criteria
+		if the start of a word is found
+			cycle through the following characters in the document
+				if word1 is found
+					check for distance
+				find a new word and if the beginning of word2 is found within the given distance
+					check for word2
+				if word2 is found
+					increment the number of matches and mark criteria as found
+				otherwise continue checking the following words
+
+return the number of matches
+
+c.
+
+standardizeCritera function:
+
+nCriteria: 6
+dist: {-1,    -10,	0,	  6,	     7,		0	  } - expected: the first two, third, and last criteria have been removed, leaving two
+wrd1: {"mad", "sad",  "testing",  "testing", "testing", "test"	  } - because the distances are negative and 0
+wrd2: {"neg", "neg",  "zero",     "dist",    "neg",     "zero"} - returns 2
+
+nCriteria: 6
+dist: {1,      10,	5,	   6,	      7,	 8	    } - expected: the first, and last four criteria are removed, leaving one
+wrd1: {"mad",  "sad",   "testing", "testing", "testing", "test"	    } - because the the word2s have invalid characters
+wrd2: {"test8", "test", "hyphen-", "spa ces", "per.iod", "que?stion"} - returns 1
+
+nCriteria: 6
+dist: {1,       10,    5,	   6,	       7,	   8	     } - expected: the first, and last four criteria are removed, leaving one
+wrd1: {"mad8",  "sad", "testing-", "test ing", "test.ing", "te?st"   } - because the word1s have invalid characters
+wrd2: {"test", "test", "hyphen",   "spaces",   "period",   "question"} - returns 1
+
+nCriteria: 6
+dist: {1,       10,    5,	   6,	       7,	   8	     } - expected: all of the criteria are removed
+wrd1: {"mad8",  "sa,d", "testing-", "test ing", "test.ing", "te?st"   } - because the word1s have invalid characters
+wrd2: {"test", "test", "hyphen",   "spaces",   "period",   "question"} - returns 0
+
+nCriteria: 6
+dist: {1,     10,     5,	 6,	     7,	        8	  } - expected: the first two and last two criteria are removed, leaving two
+wrd1: {"mad", "",     "testing", "testing", "testing", ""        } - because either word1 or word 2 have no characters
+wrd2: {"",    "test", "one",     "two",     "",        "question"} - returns 2
+
+nCriteria: 6
+dist: {1,       10,      5,	    6,	       7,	  8	 } - expected: the first, third, and last criteria are removed, leaving three
+wrd1: {"mad",   "maD",   "testing", "testing", "testing", "MAD"  } - because they are matching other elements 
+wrd2: {"robot", "Robot", "tests",   "stuff",   "tests",   "RoboT"} - returns 3
+
+nCriteria: 6
+dist: {1,       1,      2,	    6,	       7,	  1	 } - expected: some of the elements are revoved
+wrd1: {"mad",   "maD",   "testing", "testing", "testing", "MAD"  } - because they are matching other elements 
+wrd2: {"robot", "Robot", "tests",   "stuff",   "tests",   "RoboT"} - returns 3
+
+nCriteria: 6
+dist: {1 ,     10,     5,	  6,	     7,		8	  } - expected: all elements remain, all criteria are in lower case writing
+wrd1: {"Mad",  "sad",  "testing", "testing", "teSTIng", "Test"	  }
+wrd2: {"test", "CAPS", "LOCKED",  "CAPS",    "CAPSLoCk",    "QUESTION"} - returns 6
+
+nCriteria: 6
+dist: {1 ,                     10,     5,	                6,	   7,	     8} - expected: all elements remain, the twenty character strings are processed correctly
+wrd1: {"ReallyReallyLongWord", "sad",  "thisIsA", 		"testing", "teSTIng",  "ReallyReallyLongWord"}
+wrd2: {"ReallyReallyLongWord", "CAPS", "ReallyReallyLongWord",  "CAPS",	   "CAPSLoCk", "SuperReallyLongWords"} - returns 6
+
+
+nCriteria: 1
+dist: {1} - expected: function returns properly when there is only 1 criteria
+wrd1: {"test"}
+wrd2: {"test"} - returns 0;
+
+
+nCriteria: 0
+dist: {1} - expected: function returns properly when there are 0 criteria
+wrd1: {"test"}
+wrd2: {"test"} - returns 0;
+
+nCriteria: -10
+dist: {1} - expected: function returns 0 properly when there are negative criteria
+wrd1: {"test"}
+wrd2: {"test"} - returns 0;
+
+---
+
+calculateScore function:
+
+dist: {2,	   4,	        1,	     13    } 
+wrd1: {"mad",      "deranged", "nefarious", "have"}
+wrd2: {"scientist", "robot",     "plot",     "mad" }
+
+nCriteria: 4
+"deranged deranged robot deranged robot robot" - returns 1 match - testing to make sure it does not detect multiple matches for the same criteria
+"deRAnged deranGEd roBot dERAnged roBOT RObot" - returns 1 match - testing to make sure that caps do not hinder matching
+"deranged" - returns 0 matches - testing to make sure it does not match based on the first word
+"adfasdfasDF" - returns 0 matches - testing to make sure it does not return matches for no reason
+"" - returns 0 matches - testing ot make sure it functions properly on a document with no characters
+"deranged robot" - returns 1 match - test to make sure that basic matching works
+"deranged            robot" - returns 1 match - test to make sure that extra spaces do not hinder matching
+"deranged ~ ! @ # $ % ^ & * ( )_+/.,?><  robot" - returns 1 match - test to make sure that nonalphabetical characters do not hinder matching
+"deranged.robot" - returns 0 matches - test to make sure that a match is not returned because there is no space
+"have mad" - returns 1 match - test to make sure that the last element is checked
+
+"The mad UCLA scientist unleashed a deranged evil giant robot." - return 2 matches - check for matches in a basic sentence
+"The mad UCLA scientist unleashed an evil giant robot." - return 1 matches - make sure "mad scientist" matches when the second word is 2 words away
+"The mad old UCLA scientist unleashed an evil giant robot." - return 0 matches - make sure "mad scientist" does not match when "scientist" is 3 word away
+"       The mad UCLA scientist unleashed a deranged        evil giant robot." - returns 2 matches - make sure that a lot of spaces in the document do not hinder matching
+"have mad scientist deranged robot" - returns 3 matches - make sure matches work in the right direction
+"robot deranged scientist mad have" - returns 0 matches - make sure that matches do not work when criterion are ordered in reverse
+"Two mad scientists have deranged-robot fever." - return 0 matches - check to make sure that "deranged robot" does not match because there is no space in between them in the document
+"haveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveAhaveA" - 200 character string - returns 0 matches
+
+nCriteria: -1 
+"deranged deranged robot deranged robot robot" - expected: returns 0 - make sure that it returns 0 when ncriteria is negative 1
+
+dist: {2,	               4,	    1,	                    13     } 
+wrd1: {"thisisa",              "derranged", "thisisalsoa",          "reallyreallylongword"}
+wrd2: {"reallyreallylongword", "robot",     "reallyreallylongword", "isthis" }
+
+nCriteria: 4
+"thisisa reallyreallylongword." - returns 1 match - make the it functions properly with the max number of characters for a word
+"reallyreallylongword isthis. thisisalsoa reallyreallylongword" - returns 2 matches - same as above

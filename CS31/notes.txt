@@ -1,0 +1,84 @@
+Basics:
+cout.setf(ios::fixed); //always shows the set precision amount of decimal values
+cout.precision(2); //always shows two decimal values
+
+getline(cin,var); //use to get an input from user up to newline, cout only goes to blank characters
+ - getline is only for strings
+ - use cin for numbers
+
+cin.ignore(1000000,'\n'); //clears the input stream so other inputs will not be gotten automatically
+ - must be used after getting an int or double input
+
+strings:
+"hello"<"help"
+'\n'
+s.at(int) - gives character at that position OR s[int]
+s.size() - returns the size of the string
+
+<cctype>
+for characters:
+toLower(char);
+isDigit(char);
+
+
+
+
+
+modulus:
+3%4=1
+same format as dividing:
+10%3 gives teh remainder of 10/3
+
+Control Flow:
+if(bool){
+
+}else if(bool){
+
+}else{
+
+}
+
+switch(any Type){
+	case compOfType1:
+			do;
+			break;
+	case compOfType2:
+			do;
+			break;
+	default:
+			do;
+}
+
+
+do{
+this
+}while(bool);
+
+while(bool){
+
+}
+
+for()
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+Functions:
+
+Program Dev:
+
+Parameters and Overloading:
+
+Arrays:
+when declaring an array, its last position is one less than the amount of elements in the array - starts at 0

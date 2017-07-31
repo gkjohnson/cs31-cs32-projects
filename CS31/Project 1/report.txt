@@ -1,0 +1,13 @@
+step 5 - inputs:
+	-Typing a negative number for one of the values will result in a negative voting percentage, which does not make sense.
+	-Typing a 0 for all three inputs results in the percents being displayed as "-1.$%" because the program will end up dividing by zero if 'numberSurveyed' is set to zero.
+
+Step 6 - logic_error.cpp:
+	-Added a negative sign before the 'numberSurveyed' variable when calculating 'pctJerry'
+	-Inserting a negative sign before the 'numberSurveyed' variable when calculating 'pctJerry' causes the 'pctJerry' variable to be negative when using reasonable inputs and therefore the program displays a negative percent for the amount of people that will vote for Jerry, which does not make sense.
+
+Setp 7 - compile_error.cpp:
+	-Removed a semicolon from the end of a cout statement
+	-Removed the 'forMeg' variable declaration
+	-The first error reported is that there is a semicolon missing because I removed it
+	-There are three more errors about an undeclared identifier "forMeg" because the "forMeg" variable is referenced three times throughout the program, but it was never declared.

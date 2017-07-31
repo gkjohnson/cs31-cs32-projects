@@ -1,0 +1,37 @@
+2. the Bag's insert function does not work with the URL type because insert() calls the
+"find" function. The find function uses the "!=" comparison operator with the
+templated type, but because the URL type does not have the "!=" operator overloaded, the
+compiler does not know what to do and gives an error.
+
+3b. You would not be able to solve the problem with just listAll because static/global
+variables are not allowed and neither are stacks and without either of those, you would
+not be able to keep track of the previous directories names, and therefore not have a
+complete directory string to print.
+
+4a. O(200*N^3) which simplifies to O(N^3)
+The algorithm consists of three nested for loops, all of which have to cycle through
+N items, so N*N*N - one for each for loop. The outer loop does a comparison,
+an addition, and two assignments (4*N). The second loop does two comparisons, two assignments,
+and an addition (5*N). The third loop does 5 comparisons, 2 additions, 3 assignments (10*N)
+
+b. O(88N^3) which simplifies to O(N^3)
+Every time, the nested for loop has to one less iteration than the previous time.
+The outer loops does 4 operations, the second loop also does 4 operations, which gives
+16*N(N+1)/2. The third loops does 11 operations, which gives 176*N^2*(N+1)/2 which
+simplifies down to 88N^3 
+
+5a. O(N^2)
+
+- creating a new bag takes a constant amount of steps, so it is negligible
+- cycling through each N items in b1 takes N iterations
+	- for each item, "contains()" and therefore "find()" is called, which 
+	cycles through every N item in b2. This is equivelant to N^2 because find() is
+	an N iteration loop, and it is called within the for loop, another N
+	iteration loop
+- swap is a constant function because it simply exchanges values, so it is negligible
+- The average case would take less time because when using "Find" it may often find 
+  the item in the middle of the bag
+
+b. This algorithm calls a "sort()" function, so it could be far worse or better
+than the previous algorithm depending on how this "sort" function works and 
+which algorithm it uses.

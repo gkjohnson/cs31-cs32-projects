@@ -1,0 +1,138 @@
+construction order:
+1. construct base part
+2. construct the data members
+3. execute the body of the constructor
+
+destruction works in the reverse order
+1. execute the body of the destructor
+2. destroy the data members
+3. destroy the base part
+
+- the destructor must be virtual, but the default destructor is not virtual
+- you must declare a custom destructor to make it virtual
+- however, you must then make out a body, because it is always called when a derived class' destructor is called
+
+RECURSION
+- always make sure that the function can return an actual value, and that it does not just calling itself over and over again
+	without ever returning a value. Or make sure that it has the capability to return multiple values, like "true" OR "false"
+	Otherwise it might just return "true" all the time
+- always make sure that all of the important base cases are available. Ie, make sure that an array is not overrun by making the
+	a case that checks to make sure the array has more than one element to check. Ie. makes sure you check to make sure
+	that (n!=0) or that (n>=1). Ex: when checking to make sure you can go up a step, make sure you have enough energy first
+- the recursive function calls should always make progress towards a base case, so that you can make sure that the loop will
+	definitely terminate eventually
+- recursion does not necessarily pay off so much with a linear recursion structure. When there are two recursive calls in the path,
+	then recursion tends to be much easier than using a loop because you would have to create a stack object and maintain it
+	yourself
+
+MIDTERM:
+Types of questions:
+heres a piece of code - what is the output
+what does the code do/what is it doing
+debugging question - find the problem and fix it
+write a function that does this
+
+big topics:
+recursion - includes function from hw
+
+NEW TOPIC:
+templates and class templates:
+
+
+
+
+//similar functions, but different inputs
+//written with EXACTLY the same code
+//it would be written the same for floats
+//or strings or anything, really
+int minimum(int a, int b){
+	if(a<b)
+		return a;
+	else
+		return b;
+}
+
+double minimum(double a, double b){
+	if(a<b)
+		return a;
+	else
+		return b;
+}
+
+//here is how to make a template for
+//the minimum function
+template<typename T>
+T minimum(T a, T b){
+	if(a<b)
+		return a;
+	else
+		return b;
+}
+
+int main(){
+	int k;
+	cin>>k;
+	cout<<minimum(k,10)/2;
+	double x;
+	...
+	double z=3*minimum(x*x,x+10)/2;
+	...
+	int z=minimum(0,3*k-k+4);
+	...
+	
+}
+
+
+//What if i call minimum with int and double?
+int main(){
+	int k;
+	... minimum(k,3.5) ... //ERROR! - cannot do conversions!
+
+}
+
+//also, when using an array, the template would take a 
+//pointer to the array. when comparing, it would just
+//compare the value of the memory location, so there is
+//a problem
+//So you can overload the minimum function so that it will
+//compare cstrings together properly
+
+//comparing chickens with the templated minimum function
+//doesnt make sense - you havent overloaded the comparison
+//operators, so it doesnt make sense to use the minimum function
+//and it will not compile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

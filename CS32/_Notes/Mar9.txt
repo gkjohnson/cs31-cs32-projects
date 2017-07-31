@@ -1,0 +1,219 @@
+heaps:
+
+insert:
+ make it a complete binary tree, buble up new value to its proper position
+
+remove top item:
+ remove it, and promote bottom right value to root, in order to make a complete binary
+ tree. Trickle dow root value to its proper position
+
+
+
+heap:
+80
+ 60
+  40
+  10
+ 50
+  30
+
+array:
+[80][60][50][40][10][30]
+
+to find the parent of any value at i, parent(i)=(i-1)/2 and drop the fraction
+to find teh children of any value at i, children(j)=(2j+1);
+
+heap sort:
+look at a node, and then its children and check if it they are bigger than the parent
+if so, bubble them up
+Heap sort is order NLogN
+
+to make a heap go in increasing order
+
+put root in the right spot - bottom right of the tree
+
+[10][9][6][3][2][5]
+[5][9][6][3][2]|[10]
+
+now trickle by comparing children while ignoring the 10
+[9][5][6][3][2]|[10]
+
+now put 9 at the end and trickle while not comparing the 9
+
+[2][5][6][3]|[9][10]
+[6][5][2][3]|[9][10]
+
+now with the 6
+
+[3][5][2]|[6][9][10]
+[5][3][2]|[6][9][10]
+
+now with the 5
+
+[2][3]|[5][6][9][10]
+[3][2]|[5][6][9][10]
+
+and finally with the 3
+
+A general graph:
+like a tree, but without the requirement to have a unique path to each node
+
+like a network of computers. Each node/vertex are connected to others with edges.
+Each edge may have a value connected to it (connection speed) and you can
+traverse the graph by using the values to find the fastest path. 
+
+Does your graph have a cycle or not? Some edges can only be one way. A cycle maybe bad
+a graph with cycles - cyclic
+with no cycles - acyclic
+
+"DAG" - a direction acyclic graph - the graph should NOT hae any cycles in it
+
+to find each potential path, using a topological sort works
+
+
+
+a graph can be represented as a matrix of bool values for where they connect
+
+
+
+  0 1 2 3 4
+  ---------
+0|0 1 0 1 0
+1|0 0 1 0 0
+2|0 0 0 0 1
+3|0 1 1 0 0
+4|0 0 0 1 0
+
+
+Adjacency list:
+
+0-> 1 3
+1-> 2
+2-> 4
+3-> 1 2
+4-> 3
+
+requirement analysis - what does the customer want?
+risk analysis - should we do it?
+analysis - WHAT must be done
+design - HOW will it be done
+implementation - how is this gonna happen - will it work right/quickly
+testing - does it work
+deployment
+maintenance and enhancement
+
+
+spiral workflow
+analysis
+design
+implementation
+test
+
+cycle through these, doing a little every time
+
+tighten up the cycle so it gets done faster
+Called "Extreme Programming" -> agile development methods
+
+
+
+
+
+
+
+
+FINAL:
+WG Young CS 50
+3-6 PM
+Sat 3/12
+Open book, Open notes
+no Electronics
+
+Review Session:
+WG Young CS 76
+1pm - 2:30pm
+Sat 3/12
+
+Brian Choi has a sample final
+
+what is its time complexity?
+
+understand
+stacks
+ques
+binary search trees
+hash tables
+
+
+
+
+
+
+build->project configuration->debug/release
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

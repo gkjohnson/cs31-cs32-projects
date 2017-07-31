@@ -1,0 +1,30 @@
+never override a nonvirtual function
+constructors are never virtual
+pure virtual - tell compiler to not bother to look for implementation of the function
+	class name{
+		virtual f()=0; //this is pure virtual
+	}
+	// this class can never be created becuase it has a
+	// pure virtual function. There would be an issue if
+	// you every tried to call the PV function.
+	// neither dynamically allocated or statically allocated
+	// a function parameter can still be a "name" type with
+	// a PV function because a derived class can then be 
+	// passed to it
+
+when making a base class, make sure that the destructor is virtual ALWAYS
+	because if deleting it via an array of base class pointers
+	that point to derived class objects, then it will only
+	call the base class destructor
+
+A class that has no data members and ONLY pure virtual functions
+	is known as an "Interface Class" - there is no implementation
+	for the functions other than the destructor which would be
+	empty
+
+inheritance - inherits from the base class (gets the functions and data
+	members from the base class)
+polymorphism - the same thing can be looked at in many ways. something
+	may look at it as a circle, other may look at it as a shape
+	or a member function that changes based on the kind of object
+	(circle draw vs rectangle draw) is polymorphic

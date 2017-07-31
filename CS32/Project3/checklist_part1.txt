@@ -1,0 +1,38 @@
+1.
+Actor:
+i.
+[x] have a constructor
+[x] have a destructor
+ii.
+[x] must have a "do something" function
+iii.
+[x] must have GetX, SetX and GetY, SetY
+iv.
+[x] must have a function GetMyID() that returns the actors id
+v.
+[x] must have a GetDisplayColor() function that returns the actors color
+vi.
+[x] you may add other public or private functions
+
+2.
+Nachman:
+i.
+[x] must have a simple constructor that is compatible with the world class
+[x] must have a simple destructor
+ii.
+[x] must have a limited version of the doSomething function
+	[x] lets player pick direction by hitting key
+	[x] won't move into wall or cage door
+	[x] adjusts nachman's x, y coordinates
+iii.
+[x] Your NachMan must return its proper object ID
+iv.
+[x] your nachman must return its proper color (yellow) when its GetDisplayColor() function is called
+v.
+[x] must have a function that determines whether nachman is dead to be used in the RunLevel function
+vi.
+[x] can add public/private functions as necessary
+
+3.
+[x] limited version of RunLevel() method in MyWorld class
+[x] nachman should be able to move around the maze

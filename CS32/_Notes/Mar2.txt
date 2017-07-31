@@ -1,0 +1,213 @@
+binary subtree
+every node has two pointers
+less than the node on the left side
+greater than the node on the right side
+
+when searching, we want every question of which way to go
+to cut the amount of items in half - gives LogN search time
+
+The tree can be unbalanced. You have to make sure to rebalance the tree in order
+every time you add a node
+Balanced: every node as an equal amount of children (within 1) on either side
+
+AVL tree: always keeps balanced
+
+2-3 tree: only when everyone node has two values in it, only then would a new
+level be opened. Every child can also have two values. A single node can have
+three children. If a node has one value, it is like a binary search tree 
+(two children)
+
+example:
+you put a node in any one with only one node
+if you try to put three nodes in one, then the ndoe splits, and the node gets promoted
+Until every node is filled with two values
+because you are spliting it into three, the time it takes to find the play to put your
+new node, it takes log base 3 of N time
+A little bit of extra calculation when adding a new tree
+
+2-3-4 tree: same general idea, now every node has 2,3, or 4 children. code to deal with
+the tree is more complicated. Is it worth it?
+
+Every node can be looked at like a binary tree - with a root node+1 child
+or two children, or none
+
+Red Black, keeping track of what kind of node it is - does it have two children or
+one? This is kind of how a node is determined to be red or black
+
+four template classes in the C++ libraries:
+
+set
+multiset
+map
+multimap
+
+#include <set>
+using namespace std;
+
+set<int> s;
+s.insert(10);
+s.insert(30);
+s.insert(20);
+s.insert(30);
+cout<<s.size()l//3 - second insertion of 30 did nothing because it was already there
+
+set<int>::iterator p=s.find(20); // if 20 isnt found, then find returns the value
+				 // of the iterator past the end
+if(p!=s.end()) //found
+	cout<<*p; //20
+
+s.erase(p); //removes the 20 - takes an iterator
+cout<<size(); //2
+s.remove(30) //removes 30 - takes a value
+
+//how to look through every item in the set
+//gauranteed that the nodes will be visited in order
+//++ is potentially a logN operation because it may need to search the tree to find
+// the next value
+for(p=s.begin();p!=s.end();p++)
+	cout<<*p<<endl;
+
+//There is also a multiset that is like set, but can hold more than one item of the
+same type
+
+#include <set>
+using namespace std;
+
+multiset<int> s;
+s.insert(10);
+s.insert(30);
+s.insert(20);
+s.insert(30);
+cout<<s.size();//4 - two 30s
+
+set<int>::iterator p=s.find(20); // gives you iterator to the first of the two
+				 // of the iterator past the end
+if(p!=s.end()) //found
+	cout<<*p; //20
+
+s.erase(p); //removes the 20 - takes an iterator
+cout<<size(); //2
+s.remove(30) //removes 30 - takes a value
+
+//how to look through every item in the set
+//gauranteed that the nodes will be visited in order
+//++ is potentially a logN operation because it may need to search the tree to find
+// the next value
+for(p=s.begin();p!=s.end();p++)
+	cout<<*p<<endl;
+
+int n=s.count(20);
+
+
+you must have the ability to ask the relative order of the items. So your custom
+class must have the less than operator defined
+
+
+// maps
+
+ex:
+iou:
+bob -> 20
+mary -> 10
+
+"key - value pairs"
+
+this kind of "mapping" happens all the time - dictionary, phone book etc
+
+acts like a binary search tree based on the key - the value is what can be
+changed - cannot change the key - that woudl destroy the tree structure
+
+#include <map>
+using namespace std;
+
+map<string,double> ious;
+
+double name;
+
+double amt;
+
+//reads from the keyboad values for the name and the amount
+//acts as true if it is getting stuff
+//find the key if it exists, and change the value
+while(cin>>name>>amt){
+	ious[name]+=amt; //ious[name] returns a reference to a double
+}
+
+for(map<string,double>::iterator p = ious.begin();p!=ious.end();p++){
+	cout<<p->first <<" owes me $"<<p->second <<endl;
+
+}
+
+
+
+map<string, list<PhoneNumber> > directory;
+
+
+//To hold all students in UCLA - to have a billion spaces for people
+//LOTS of memeory. maybe hold pointers to students? STILL lots of memory - 4GB
+
+so, make a table from 0 to 9999 elements - the first four digits of an ID. It does
+not point to one person, it points to a map of students that all have the same last
+4 digits in their ID
+
+Trying to find a better way to search through this list - average of four students
+per slot
+
+this is called a Hash Table. an item corresponds to a digit, and then it hold a list
+of items. Called an "open hash table" because the hash table does not hold the items
+themselves
+
+every slot in the table is a "bucket". The key divided 100000 gets you the four digit
+number
+
+The binary search tree is still MUCH faster because there is a huge grouping at one
+spot. lots of "collisions" where the same value falls into the same bucket. The hash
+function that distributes the values among the buckets needs to distribute uniformly.
+Should look somewhere else? maybe the LAST four digits of the student ID. ID % 10000.
+To use strings instead of an id, the hash function must just convert strings to a
+number.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

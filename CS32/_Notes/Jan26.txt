@@ -1,0 +1,229 @@
+STACK - FILO
+---
+
+Push na item onto the stack
+pop and item from hte stack
+look at top item on the stack
+ask is the stack empty
+ask how many items are in the stack
+
+//Using Arrays
+keep track of the first empty slot (also amount of things in the array)
+keep track of list via array
+
+To look at the top, just look at the element at the number of items in the array minus one
+To delete the top (pop) just decrement the count
+To add an item (push), put the item at the "count" element and increment the count
+
+//Errors
+with empty stack:
+ - looking at the top of the stack - would end up looking at the element -1
+with Full array:
+ - can't add any more (capacity==count)
+  - to fix - allocate a new array with double the elements, copy over all of the items, then delete the old array
+
+Array has some issues
+
+//Using Linked Lists
+- to add an item, you need to cycle through each element (keep a pointer to the last item?)
+- instead of adding items to the "end" of the linked list, add it to the beginning of the list so that the "top" of the stack is always the first element in the list
+- also keep count of amount of items in the list
+- pushing, popping, and looking at top should ALWAYS be the same amount of time.
+ - if you have to cycle through the list each time, this is not the case
+
+
+#include <stack>
+using namespace std;
+
+stack<int> s;
+
+
+
+QUEUE - FIFO
+---
+
+create an empty queue
+enqueue an item
+dequeue an item
+look at the front item on the queue
+ask if the queue is empty
+ask how many items are in the queue
+
+- could be treated as "circular" - when you get to the end, the head now pointers to the beginning called a "circular buffer"
+
+
+#include <queue>
+using namespace std;
+
+queue <int> q;
+q.push(10);
+q.back();
+q.push(20);
+int n = q.front();
+q.pop();
+
+if(!q.empty()){
+ cout<<q.size();
+}
+
+
+INHERITANCE
+---
+
+//want to draw a picture with the following shapes and keep them in an array so i can draw them in an order
+//but an array can only hold one type.
+//Solution? Two arrays? One for circles and for rectangles?
+//What about sustainability? Later there is a requirement for a new ellipse class - now weed 
+
+class Rectangle{
+public:
+ void move(double xnew, double ynew);
+ void draw() const;
+
+private:
+ double m_x;
+ double m_y;
+ double m_height;
+ double m_width;
+}
+
+class Circle{
+public:
+ void move(double xnew, double ynew);
+ void draw() const;
+
+private:
+ double m_x;
+ double m_y;
+ double m_r;
+}
+
+
+//I want this function to work for both rectangles and circles, so i have to overload it to work with both shapes
+void f(Circle c){
+ c.move(10,20);
+ c.draw();
+}
+
+void f(Rectangle c)
+ c.move(10,20);
+ c.draw();
+}
+
+////////////////////
+
+Shape - Generalization (a super class for Circle) (base class of Circle)
+ 
+Circle - Specialization (a sub class of Shape) (derived class of Shape)
+
+*A Circle is-a-kind-of Shape* - an "is-a" relationship
+
+
+Derived* => Base* //pointer to the Base class can point to a Derived class
+Derived& => Base& //reference to the Base class can refer to a Derived class
+
+
+////////////////////
+
+//CODE FOR THE PICTURE:
+
+class Shape{
+public:
+ virtual void draw() const;
+ virtual void move(double xnew, double ynew); //"virtual" keyword means that when rectangle overrides, use the implementation for rectangle's "draw"
+private:
+ double m_x;
+ double m_y;
+}
+//Shape Function Implementations:
+void Shape::move(double xnew, double ynew){
+ m_x=xnew;
+ m_y=ynew;
+}
+
+class Rectangle : public Shape{ //rectangle is a kind of shape
+public:
+ //if the implementation of the move function in the Shape class is acceptable for Rectangle, then do not declare it here
+ virtual void draw() const;
+
+private:
+ //x and y do not need to be in here because they are in the Shape class
+ double m_height;
+ double m_width;
+}
+
+class Circle : public Shape{ //circle is a kind of shape
+public:
+ //if the implementation of the move function in the Shape class is acceptable for Circle, then do not declare it here
+ virtual void draw() const;
+
+private:
+ //x and y do not need to be in here because they are in the Shape class
+ double m_r;
+}
+
+
+//the pointers would point to different kinds of shapes (circles, rectangles, etc)
+Shape* pic[100]; 
+pic[0] = new Circle;
+pic[1] = new Rectangle;
+pic[2] = new Rectangle; // Shape pointer to a recatangle is OKAY - a pointer to a derived class is allowed to point to a base class
+
+
+for(int k=0;k<~;k++){
+ pic[k]->draw(); //couldn't do, because Shape did not have a draw function
+}
+
+void f(Shape& s){ //f works for all classes that are derived from Shape
+ s.move(10,20);
+ s.draw();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

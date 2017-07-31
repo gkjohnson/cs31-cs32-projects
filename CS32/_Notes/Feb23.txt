@@ -1,0 +1,142 @@
+O(N^2) sorts
+	selection sort
+	bubble sort
+	insertion sort
+O(N*logN) sorts
+	merge sort
+	quick sort
+
+QUICK SORT
+---
+pick a pivot and split the array and order all of them
+worst case for quick sort:
+
+T(N)= T(0) + T(N-1) +O(N)
+T(N)~ O(N^2)
+
+to make it better -
+- sample several (3) items before picking the pivot to get a better pivot
+- beginning middle and end are the best choices
+- N*LogN is applicable for LARGE N. 
+- with smaller amounts, there might be better algorithms.
+- so once quicksort gets down to 9 or so items to be sorted in a split, then use another algorithm - insertion sort (very good if the item is not far from where it belongs)
+	
+	quicksort:
+		quicksortAux
+		insertionsorty
+
+	quicksortAux:
+	if(N>=10)
+		partition
+		sort left
+		sort right
+	
+Can Monitor its Own performance	
+- algorithm can track its own performance and switch to a different algorithm if it looks like its going down to worst case (N^2) then use a different algorithm with worst case (N*LogN)
+- usually the "Depth" is set at 2*Log(N) - N being the original number of items
+- called introsort
+
+
+MORE DATA STRUCTURES
+---
+Tree:
+
+			     Elizabeth
+	Charles		Anne		Andrew		Edward
+   William Harry     Peter Zara    Beatrize Eugene  Louise Jame
+                    Savannah
+
+
+interior (non-leaf) vs leaf nodes
+
+Tree
+Path	Parent->child     Root
+
+unique path from root to any node
+
+if similar data is separated, it is a tree. If there is some kind of merging, it is no longer a tree
+
+Node Structure:
+name/data
+collection of pointers that point to other nodes
+
+struct Node{
+	string name;
+	Node* children[10];
+	int nChildren;
+}
+
+// not resizeable, though
+
+
+struct Node{
+	string name;
+	vector<Node*> children;
+}
+
+Node* root; //points to the root of the tree;
+
+//count how many nodes are in the tree
+
+int count(Node* p){
+
+	int count=1;
+
+	for(int j=0;k<p->children.size();k++){
+		
+		n=count(p->children[k]);
+	
+	}
+
+	return count;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

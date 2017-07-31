@@ -1,0 +1,172 @@
+a.
+
+-Picking out test data and making sure everything functions properly was not easy on this project. There are so many variables that can be changed 
+with the grid that getting a good, all-encompassing set of test data was very time consuming.
+
+-a method for cycling through the path instruction string was not immediately obvious for me
+
+b.
+
+function isPathWellFormed:
+cycle through each character in the path string, expecting a direction character first:
+	if a direction character is expected,
+		and one is found,
+			expect a digit next
+		else if one is not found
+			return false
+	if a digit character is expected 
+		and one is found,
+			expect either a digit or a direction character next
+		else if one is not found
+			return false
+	if either a digit or a directon character is expected
+		if a digit character is found,
+			expect either a digit or a direction character next
+			if the amount of digits in the path segment is greather than the amount allowed (2)
+				return false
+		if a direction character is found,
+			expect a digit next
+		else if neither are found
+			return false
+if the cycle ends while expecting a digit
+	return false (because a digit will only be expected if a direction chraracter was the last character found)
+return true
+
+---
+
+function followSegment:
+if the start position, direction, or step number are invalid
+	return -1
+cycle through the grid cells in the direction indicated for the amount of steps indicated
+	if the robot is outside the grid or hits a wall
+		stop cycling through the grid cells
+	else if the robot does not hit a wall
+		add to the amount of steps taken
+return the amount of steps taken
+
+---
+
+function followPath:
+if the start position, end position, or path are invalid
+	return 3
+cycle through every character in the path string
+	keep track of the direction and digits for the current path segment
+	if a direction character comes next (meaning a new path segment starts) or if it is at the last character in the string
+		move the amount of steps possible in the direction for the path segment
+		add to the total amount of steps taken
+		if amount of steps taken is less than then amount indicated in the line segment, meaning the robot hit a wall
+			return 2
+if the robot got to the end position
+	return 0
+else if the robot did not hit a wall or get to the end position
+	return 1
+
+c.
+Test Data:
+function isPathWellFormed:
+should return false:
+("N") - test to make sure that the function requires a number after a direction character
+("N10e2S5sW10") - test to make sure that the function requires a number after a direction character in a long string
+("A1") - test to make sure that the function does not accept non direction or digit characters
+("s10e2N5+k1") - test to make sure that the function does not accept non direction or digit characters in a long string
+("N100") - test to make sure that the function does not accept any more than 2 digit numbers
+("N10e15S800w26") - test that three digit numbers cannot be used in a long string
+
+should return true:
+("") - test to make sure that a path with zero characters is valid
+("N1") - test to make sure that a path with a valid path segment is valid
+("N1n2S3s4E5e6W7w8") - test to make sure that any direction character can be used
+("W10") - test that a single line segment with two digits is valid
+("N10e15S80w26") - test that two digit numbers can be used
+("N2e1E01n0e20w1") - a test string with both one and two digit numbers
+
+---
+
+function followSegment:
+1x1 grid with no walls
+(1,1,'n',1) - make sure that function returns 0 steps, because robot will hit the edge of a grid after its only step
+(1,1,'W',50) - make sure that function returns 0 steps, because robot will hit the edge of the grid, just one steps are attempted.
+(5,5,'s',2) - make sure that the function returns -1 because the start position is invalid (outside the grid)
+
+1x2 grid with a wall at (1,2)
+(1,1,'e',1) - makes sure that function returns 0 steps, because robot will hit the wall after its only step
+(1,1,'e',50)- make sure that function returns 0 steps, because robot will hit the wall after just one steps are attempted
+(1,2,'w',2) - make sure that the function returns -1 because the start position is invalid (on a wall space)
+
+20x20 grid with walls from (1,18) to (18,18)
+(5,5,'e',50) - make sure that function returns 12 steps, because robot will hit a wall at (5,18)
+(5,5,'S',50) - make sure that the function returns 15 steps, because the robot will hit the bottom edge of the grid
+(5,5,'N',50) - make sure that the function returns 4 steps, because the robot will hit the top edge of the grid
+(5,5,'W',50) - make sure that the function returns 4 steps, because the robot will hit the left edge of the grid
+(20,5,'E',50) - make sure that the function returns 15 steps, because the robot will hit the right edge of the grid
+(5,5,'E',11) - make sure that the function returns 11 steps, the maximum amount of steps
+
+(0,1,'w',10) - check to make sure that 0 is not counted as a valid grid column, should return -1
+(1,0,'w',10) - check to make sure that 0 is not counted as a valid grid row, should return -1
+(-10,5,'W',10) - make sure that the function returns -1 because the starting position is invalid (above the grid)
+(30,5,'w',10) - make sure that the function returns -1 because the starting position is invalid (below the grid)
+(5,-10,'W',10) - make sure that the function returns -1 because the starting position is invalid (left of the grid)
+(5,30,'W',10) - make sure that the function returns -1 because the starting position is invalid (right of the grid)
+(10,10,'4',10) - make sure that the function returns -1 because an invalid direction character was used
+(10,10,'s',-10) - make sure taht the function returns -1 because the max steps is negative
+
+---
+
+function followPath:
+10x10 grid with walls at (1,2) to (9,2) and (2,7) to (10,7)
+(4,1,10,10,"N10e2S5sW10",nsteps) - make sure that the function returns 3 and nsteps is unchanged because the path is not well formed
+
+(0,1,1,1,"",nsteps) - make sure that 0 is not a valid starting position row. Returns 3
+(1,0,1,1,"",nsteps) - make sure that 0 is not a valid starting position column. Returns 3
+(1,1,0,1,"",nsteps) - make sure that 0 is not a valid ending position row. Returns 3
+(1,1,1,0,"",nsteps) - make sure that 0 is not a valid ending position column. Returns 3
+
+(-10,1,10,10,"",nsteps) - make sure that function returns 3 because the starting position is invalid (above the grid)
+(20,1,10,10,"",nsteps) - make sure that function returns 3 because the starting position is invalid (below the grid)
+(1,-10,10,10,"",nsteps) - make sure that function returns 3 because the starting position is invalid (left of the grid)
+(1,20,10,10,"",nsteps) - make sure that function returns 3 because the starting position is invalid (right of the grid)
+
+(1,1,-10,10,"",nsteps) - make sure that function returns 3 because the ending position is invalid (above the grid)
+(1,1,20,10,"",nsteps) - make sure that function returns 3 because the ending position is invalid (below the grid)
+(1,1,10,-10,"",nsteps) - make sure that function returns 3 because the ending position is invalid (left of the grid)
+(1,1,10,20,"",nsteps) - make sure that function returns 3 because the ending position is invalid (right of the grid)
+
+(1,2,10,10,"",nsteps) - make sure that the function returns 3 because the starting position is invalid (in a wall)
+(1,1,1,2,"",nsteps) - make sure that the function returns 3 because the ending position is invalid (in a wall)
+
+
+(4,1,10,10,"s50E50N50e50s50",nsteps) - make sure that the function returns 2 because it hits the bottom edge of the grid and then sets nsteps to 6
+(4,1,10,10,"N50s5N50e50s50",nsteps) - make sure that the function returns 2 because it hits the top edge of the grid and then sets nsteps to 3
+(4,1,10,10,"W30s4N1e50s50",nsteps) - make sure that the function returns 2 because it hits the left edge of the grid and then sets nsteps to 0
+(1,8,10,10,"e50s3n1s2",nsteps) - make sure that the function returns 2 because it hits the right edge of the grid and then sets nsteps to 2
+(4,1,10,10,"s7E3",nsteps) - make sure that the function returns 2 because it hits the edge of the grid and then sets nsteps to 6
+(4,1,10,10,"s6E6S3",nsteps) - make sure that the function returns 2 because it hits a wall then  nsteps is set to 11
+
+
+(4,1,10,10,"s6e5N9e3S9",nsteps) - make sure that the function returns 1, because it does not make it to the end point, and sets nsteps to 32
+(4,1,10,10,"",nsteps) - make sure that the function returns 1 because it did not reach the end point and nsteps is 0 because no steps were taken
+
+(4,1,10,10,"s6e5N9e4S9",nsteps) - make sure that the function returns 0, because it makes it to the end point, and sets nsteps to 33
+(4,1,4,1,"",nsteps) - make sure that the function returns 0 because it reached the end point (same as start point) and sets nsteps to 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

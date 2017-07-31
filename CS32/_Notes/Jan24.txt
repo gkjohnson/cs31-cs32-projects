@@ -1,0 +1,173 @@
+Project 2 questions
+subtract and combine may use the iterator functions on the original passed functions
+
+
+HOW TO INLINE FUNCTIONS:
+ - compiler copies the body of the function and places it where the function call is in the code
+ - the overhead to prepare for calling hte function may be more than it is for the body of hte function itself
+
+Circle.h
+---
+class Circle{
+public:
+ double radius() const;
+private:
+ double m_raidus;
+}
+
+inline double Circle::radius() const //"inline" keyword - could also be done right in the declaration (might reduce readability also does not need inline)
+{
+ //"inline" keyword tells the compiler to replace the function call with the body
+ //if two cpp files include this header, is there a problem? Both say that they define the radius functions, so Linker would normally complain
+ //NO!! because right at compile time the compiler replaces the code (because of the "inline" keyword), so technically there would be no function
+ //definition because the definition is being right in the code
+
+ return m_radius;
+}
+
+Circle.cpp
+--
+#include "circle.h"
+
+/*double Circle::radius() const
+{ 
+ return m_radius;
+}*/ // remove the radius code from the .cpp file (it will be inlined)
+
+double area(const Circle& circ){
+ const double PI = 4*atan(10);
+ return PI *circ.radius()*circ.radius();
+}
+
+STACK
+---
+First In Last Out - imagine "stacking" plates and putting a new one on top, that is the first one that you would take off
+
+create a(n empty) stack
+push an item onto the stack
+pop an item from the stack		\ potentially undefined
+look at the top item on the stack	/ if stack is empty
+ask if the stack is empty
+
+ask how many items are in the stack
+look at any item in the stack
+
+
+
+#include <stack>
+using namespace std;
+
+int main(){
+ stack<int> s;
+ s.push(10); // puts items on the top of the stack
+ s.push(20);
+ int n=s.top(); // looks at the top of the stack - returns the type
+ s.pop(); // returns void - just gets rid of the top item
+ if(!s.empty)
+  cout<<s.size();
+
+
+
+
+
+
+}
+
+----> stack growing
+10	// added 10
+10 | 20	// added 20
+10 | 20	// looked at the top item
+10	// removed 20
+10	// checked to see if it was empty
+
+
+Parsing text
+---
+	postfix									    infix      functions		       prefix
+string: "862/-1+" - a notation for operation on numbers - another way of writing is 8-6/2+1 or add(subtract(8, div(6,2)),1) or +-8/621
+
+operand stack
+--->
+8		//push first operand on
+8 | 6		//push second operand on the stack
+8 | 6 | 2	//push third on
+8 | 3		//encountered divide operator - pop the first two off - operate - push the result on
+5		//encountered subtract operator - pop the first two off - operate - push the result on
+5 | 1		//push the next operand on
+6		//encountered add operator - pop the first two off - operate - push the result on
+
+//the remaining digit is the final answer
+
+
+string: "8-6/2+1"
+
+operator stack
+--->
+-	//camer across the first operator- push it on
+- | /	//came to another operator, if it has a higher precedance then push it on
+-	//came to a plus operator (less preference) push / onto the translation
+	//+ and - has equal pref, push - onto the translation
++	//push + on it
++	//came across 1
+
+
+postfix translation
+8
+8 | 6
+8 | 6 | 2
+8 | 6 | 2 | /
+8 | 6 | 2 | / | -
+8 | 6 | 2 | / | - | 1
+8 | 6 | 2 | / | - | 1 | +
+
+
+String: "8-(6+9/3)+5"
+ends up being "8693/+-5+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
